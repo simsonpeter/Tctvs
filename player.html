@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Player</title>
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .player-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .channel-info {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .channel-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .video-js {
+            width: 100%;
+            height: 70vh;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="window.history.back()">← Back</button>
+    
+    <div class="player-container">
+        <div class="channel-info">
+            <div class="channel-title" id="channelTitle"></div>
+        </div>
+        <!-- Video.js Player -->
+        <video id="tv-player" class="video-js vjs-default-skin" controls preload="auto" data-setup='{}'>
+            <source id="video-source" type="application/x-mpegURL">
+        </video>
+    </div>
+
+    <!-- Video.js Script -->
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <script>
+        // Fetch channel data from GitHub
+        async function fetchChannels() {
+            const response = await fetch('https://raw.githubusercontent.com/yourusername/yourrepo/main/tv.json');
+            const channels = await response.json();
+            return channels;
+        }
+
+        // Get channel ID from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const channelId = urlParams.get('channel');
+
+        // Load selected channel
+        async function loadChannel() {
+            const channels = await fetchChannels();
+            const selectedChannel = channels.find(ch => ch.id === parseInt(channelId));
+
+            if (selectedChannel) {
+                document.getElementById('channelTitle').textContent = selectedChannel.name;
+
+                // Initialize Video.js player
+                const player = videojs('tv-player', {
+                    controls: true,
+                    autoplay: true,
+                    preload: 'auto'
+                });
+
+                // Set the video source
+                player.src({
+                    src: selectedChannel.streamUrl,
+                    type: 'application/x-mpegURL' // For HLS streams
+                });
+
+                player.ready(() => {
+                    player.play();
+                });
+            } else {
+                document.getElementById('channelTitle').textContent = "Channel not found";
+            }
+        }
+
+        // Load channel on page load
+        loadChannel();
+    </script>
+</body>
+</html>
