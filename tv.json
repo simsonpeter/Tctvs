@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "News Channel",
+        "logo": "https://raw.githubusercontent.com/yourusername/yourrepo/main/news-logo.png",
+        "streamUrl": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+    },
+    {
+        "id": 2,
+        "name": "Sports Channel",
+        "logo": "https://raw.githubusercontent.com/yourusername/yourrepo/main/sports-logo.png",
+        "streamUrl": "https://test-streams.mux.dev/test_001/stream.m3u8"
+    },
+    {
+        "id": 3,
+        "name": "Music Channel",
+        "logo": "https://raw.githubusercontent.com/yourusername/yourrepo/main/music-logo.png",
+        "streamUrl": "https://test-streams.mux.dev/bbb_30fps/bbb_30fps.m3u8"
+    }
+]
