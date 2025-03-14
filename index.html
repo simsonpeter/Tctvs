@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web TV Channels</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: white;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .channel-card {
+            background: #333;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .channel-card:hover {
+            transform: scale(1.05);
+            background: #444;
+        }
+
+        .channel-logo {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .channel-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Choose Your Channel</h1>
+    </div>
+
+    <div class="channel-grid" id="channelGrid"></div>
+
+    <script>
+        // Fetch channel data from GitHub
+        async function fetchChannels() {
+            const response = await fetch('https://raw.githubusercontent.com/yourusername/yourrepo/main/tv.json');
+            const channels = await response.json();
+            return channels;
+        }
+
+        // Generate channel grid
+        async function loadChannels() {
+            const grid = document.getElementById('channelGrid');
+            const channels = await fetchChannels();
+
+            channels.forEach(channel => {
+                const card = document.createElement('div');
+                card.className = 'channel-card';
+                card.innerHTML = `
+                    <img src="${channel.logo}" class="channel-logo" alt="${channel.name}">
+                    <div class="channel-name">${channel.name}</div>
+                `;
+                card.onclick = () => openPlayer(channel.id);
+                grid.appendChild(card);
+            });
+        }
+
+        function openPlayer(channelId) {
+            // Redirect to player page with channel ID parameter
+            window.location.href = `player.html?channel=${channelId}`;
+        }
+
+        // Load channels on page load
+        loadChannels();
+    </script>
+</body>
+</html>
