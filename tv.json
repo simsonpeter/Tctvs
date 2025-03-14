@@ -1,10 +1,10 @@
 [
-    {
-        "id": 1,
-        "name": "News Channel",
-        "logo": "https://raw.githubusercontent.com/yourusername/yourrepo/main/news-logo.png",
-        "streamUrl": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
-    },
+             {
+                id: 1,
+                name: "ADHISAYAM TV",
+                logo: "https://static.wixstatic.com/media/3d2e01_5276168eb2544ee8af1beb1abdb884d6~mv2.jpg/v1/fill/w_144,h_144,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
+                streamUrl: "https://livetv.adhisayamtv.org/adhisayamtv/83a062a18a761b948a73ad2ba7747a8f.sdp/playlist.m3u8"
+            },
     {
         "id": 2,
         "name": "Sports Channel",
