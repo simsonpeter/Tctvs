@@ -37,9 +37,9 @@
         "streamUrl": "https://stream.blessingtv.tv:1443/blessingtv-tamillive/mystream_720p/playlist.m3u8"
     },
     {
-        "id": 5,
-        "name": "Music Channel",
-        "logo": "https://raw.githubusercontent.com/yourusername/yourrepo/main/music-logo.png",
-        "streamUrl": "https://test-streams.mux.dev/bbb_30fps/bbb_30fps.m3u8"
+        "id": 7,
+        "name": "Channel 316",
+        "logo": "https://static.wixstatic.com/media/3d2e01_5571b11f49cd4a1e9051358766b87d00~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+        "streamUrl": "https://channel316.livebox.co.in/c316hls/live.m3u8"
     }
 ]
