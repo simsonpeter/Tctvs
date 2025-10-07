@@ -48,45 +48,45 @@
     "streamUrl": "https://live.brightmeltech.in/churchtv/churchtv.m3u8"
   },
   {
-        "id": 9,
-        "name": "Chutti Grace TV",
-        "logo": "https://static.wixstatic.com/media/3d2e01_e0908e81588a4eb1b3cf5ab61cab149e~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
-        "streamUrl": "https://server1.thewebworld.in:3065/hybrid/play.m3u8"
-    },
+    "id": 9,
+    "name": "Chutti Grace TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_e0908e81588a4eb1b3cf5ab61cab149e~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://server1.thewebworld.in:3065/hybrid/play.m3u8"
+  },
   {
-        "id": 10,
-        "name": "Comforter TV",
-        "logo": "https://static.wixstatic.com/media/3d2e01_9e7758f30cde49e9a3c29c425e8f23f5~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
-        "streamUrl": "https://jrd.lanevservices.in/jrdlive-abr/jrdtam/playlist.m3u8"
-    },
+    "id": 10,
+    "name": "Comforter TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_9e7758f30cde49e9a3c29c425e8f23f5~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://jrd.lanevservices.in/jrdlive-abr/jrdtam/playlist.m3u8"
+  },
   {
-        "id": 11,
-        "name": "Family Channel",
-        "logo": "https://static.wixstatic.com/media/3d2e01_99e43afae82a440d97e657fb2dab3e40~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
-        "streamUrl": "https://2-fss-2.streamhoster.com/pl_118/203324-1410936-1/chunklist.m3u8"
-    },
+    "id": 11,
+    "name": "Family Channel",
+    "logo": "https://static.wixstatic.com/media/3d2e01_99e43afae82a440d97e657fb2dab3e40~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
+    "streamUrl": "https://2-fss-2.streamhoster.com/pl_118/203324-1410936-1/chunklist.m3u8"
+  },
   {
-        "id": 12,
-        "name": "GoRevival TV",
-        "logo": "https://static.wixstatic.com/media/3d2e01_fa807c9cb44f42c09d09ebf4b1785ef2~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
-        "streamUrl": "https://ktismaservers.in:3870/live/gorevivaltvlive.m3u8"
-    },
+    "id": 12,
+    "name": "GoRevival TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_fa807c9cb44f42c09d09ebf4b1785ef2~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://ktismaservers.in:3870/live/gorevivaltvlive.m3u8"
+  },
   {
-        "id": 13,
-        "name": "Good News Time",
-        "logo": "https://static.wixstatic.com/media/3d2e01_2499890904c145ee9cb870daf678d435~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
-        "streamUrl": "https://5dd3981940faa.streamlock.net/goodnewstime/goodnewstime/playlist.m3u8"
-    },
+    "id": 13,
+    "name": "Good News Time",
+    "logo": "https://static.wixstatic.com/media/3d2e01_2499890904c145ee9cb870daf678d435~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
+    "streamUrl": "https://5dd3981940faa.streamlock.net/goodnewstime/goodnewstime/playlist.m3u8"
+  },
   {
-        "id": 14,
-        "name": "Gospel TV",
-        "logo": "https://static.wixstatic.com/media/3d2e01_873c66d4140849e9bcf7c4454edb1017~mv2.jpeg/v1/fill/w_189,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpeg",
-        "streamUrl": "https://gospeltamiltv.livebox.co.in/gospeltvhls/gospeltv.m3u8"
-    },
+    "id": 14,
+    "name": "Gospel TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_873c66d4140849e9bcf7c4454edb1017~mv2.jpeg/v1/fill/w_189,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpeg",
+    "streamUrl": "https://gospeltamiltv.livebox.co.in/gospeltvhls/gospeltv.m3u8"
+  },
   {
-        "id": 15,
-        "name": "Grace TV",
-        "logo": "https://static.wixstatic.com/media/3d2e01_ee1d201542194b0a9cb38501ff4c3d77~mv2.jpeg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpeg",
-        "streamUrl": "https://gracetvcgl.livebox.co.in/Gracetvhls/Gracetv.m3u8"
-    }
+    "id": 15,
+    "name": "Grace TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_ee1d201542194b0a9cb38501ff4c3d77~mv2.jpeg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpeg",
+    "streamUrl": "https://gracetvcgl.livebox.co.in/Gracetvhls/Gracetv.m3u8"
+  }
 ]
