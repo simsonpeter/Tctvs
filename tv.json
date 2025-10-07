@@ -25,10 +25,16 @@
         "streamUrl": "https://janya-digimix2.akamaized.net/india/ngrp:angelindia_all/playlist.m3u8"
     },
     {
-        "id": 4,
+        "id": 5,
         "name": "Bible TV",
         "logo": "https://static.wixstatic.com/media/3d2e01_24c3b113944d4c2893a7bd9d2bf2e968~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
         "streamUrl": "https://account33.livebox.co.in/bibletvhls/live.m3u8"
+    },
+    {
+        "id": 6,
+        "name": "Blessing TV",
+        "logo": "https://static.wixstatic.com/media/3d2e01_fab280d0cd9d4258af13c9aa00651e4d~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+        "streamUrl": "https://stream.blessingtv.tv:1443/blessingtv-tamillive/mystream_720p/playlist.m3u8"
     },
     {
         "id": 5,
