@@ -1,58 +1,57 @@
 [
-    
-      {
-                "id": 1,
-                "name": "Ark TV",
-                "logo": "https://static.wixstatic.com/media/3d2e01_5f55f7bfb2814ae99c4cc9ac1a7b6c60~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
-                "streamUrl": "https://ktismaservers.in:3917/live/arktvlive.m3u8"
-            },
-    {
-                "id": 2,
-                "name": "ADHISAYAM TV",
-                "logo": "https://static.wixstatic.com/media/3d2e01_5276168eb2544ee8af1beb1abdb884d6~mv2.jpg/v1/fill/w_144,h_144,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
-                "streamUrl": "https://livetv.adhisayamtv.org/adhisayamtv/83a062a18a761b948a73ad2ba7747a8f.sdp/playlist.m3u8"
-            },
-    {
-        "id": 3,
-        "name": "Angel TV Europe",
-        "logo": "https://static.wixstatic.com/media/3d2e01_45c1583aa6b542c1b0262d5b62dbf0b7~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
-        "streamUrl": "https://janya-digimix.akamaized.net/vglive-sk-512011/europe/ngrp:angeleurope_all/playlist.m3u8"
-    },
-     {
-        "id": 4,
-        "name": "Angel TV India",
-        "logo": "https://static.wixstatic.com/media/3d2e01_45c1583aa6b542c1b0262d5b62dbf0b7~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
-        "streamUrl": "https://janya-digimix2.akamaized.net/india/ngrp:angelindia_all/playlist.m3u8"
-    },
-    {
-        "id": 5,
-        "name": "Bible TV",
-        "logo": "https://static.wixstatic.com/media/3d2e01_24c3b113944d4c2893a7bd9d2bf2e968~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
-        "streamUrl": "https://account33.livebox.co.in/bibletvhls/live.m3u8"
-    },
-    {
-        "id": 6,
-        "name": "Blessing TV",
-        "logo": "https://static.wixstatic.com/media/3d2e01_fab280d0cd9d4258af13c9aa00651e4d~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
-        "streamUrl": "https://stream.blessingtv.tv:1443/blessingtv-tamillive/mystream_720p/playlist.m3u8"
-    },
-    {
-        "id": 7,
-        "name": "Channel 316",
-        "logo": "https://static.wixstatic.com/media/3d2e01_5571b11f49cd4a1e9051358766b87d00~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
-        "streamUrl": "https://channel316.livebox.co.in/c316hls/live.m3u8"
-    },
+  {
+    "id": 1,
+    "name": "Ark TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_5f55f7bfb2814ae99c4cc9ac1a7b6c60~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://ktismaservers.in:3917/live/arktvlive.m3u8"
+  },
+  {
+    "id": 2,
+    "name": "ADHISAYAM TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_5276168eb2544ee8af1beb1abdb884d6~mv2.jpg/v1/fill/w_144,h_144,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
+    "streamUrl": "https://livetv.adhisayamtv.org/adhisayamtv/83a062a18a761b948a73ad2ba7747a8f.sdp/playlist.m3u8"
+  },
+  {
+    "id": 3,
+    "name": "Angel TV Europe",
+    "logo": "https://static.wixstatic.com/media/3d2e01_45c1583aa6b542c1b0262d5b62dbf0b7~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
+    "streamUrl": "https://janya-digimix.akamaized.net/vglive-sk-512011/europe/ngrp:angeleurope_all/playlist.m3u8"
+  },
+  {
+    "id": 4,
+    "name": "Angel TV India",
+    "logo": "https://static.wixstatic.com/media/3d2e01_45c1583aa6b542c1b0262d5b62dbf0b7~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
+    "streamUrl": "https://janya-digimix2.akamaized.net/india/ngrp:angelindia_all/playlist.m3u8"
+  },
+  {
+    "id": 5,
+    "name": "Bible TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_24c3b113944d4c2893a7bd9d2bf2e968~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://account33.livebox.co.in/bibletvhls/live.m3u8"
+  },
+  {
+    "id": 6,
+    "name": "Blessing TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_fab280d0cd9d4258af13c9aa00651e4d~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://stream.blessingtv.tv:1443/blessingtv-tamillive/mystream_720p/playlist.m3u8"
+  },
+  {
+    "id": 7,
+    "name": "Channel 316",
+    "logo": "https://static.wixstatic.com/media/3d2e01_5571b11f49cd4a1e9051358766b87d00~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://channel316.livebox.co.in/c316hls/live.m3u8"
+  },
+  {
+    "id": 8,
+    "name": "Church TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_04d6ebd6fad54b11a74db29e9505609a~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
+    "streamUrl": "https://live.brightmeltech.in/churchtv/churchtv.m3u8"
+  },
 
-{
-        "id": 8,
-        "name": "Church TV",
-        "logo": "https://static.wixstatic.com/media/3d2e01_04d6ebd6fad54b11a74db29e9505609a~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
-        "streamUrl": "https://live.brightmeltech.in/churchtv/churchtv.m3u8"
-    },
     {
         "id": 9,
         "name": "Chutti Grace TV",
         "logo": "https://static.wixstatic.com/media/3d2e01_e0908e81588a4eb1b3cf5ab61cab149e~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
         "streamUrl": "https://server1.thewebworld.in:3065/hybrid/play.m3u8"
     }
-    ],
+    ]
