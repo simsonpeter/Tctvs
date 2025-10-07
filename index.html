@@ -1,98 +1,349 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="htmlRoot">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web TV Channels</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #1a1a1a;
-            color: white;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Tamil Christian TV</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg-primary: #0f0f0f;
+      --bg-secondary: #1a1a1a;
+      --text-primary: #ffffff;
+      --card-bg: #222;
+      --accent: #4a90e2;
+      --border-radius: 12px;
+    }
 
-        .channel-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    [data-theme="light"] {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f5f5f5;
+      --text-primary: #000000;
+      --card-bg: #ffffff;
+      --accent: #1a73e8;
+    }
 
-        .channel-card {
-            background: #333;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .channel-card:hover {
-            transform: scale(1.05);
-            background: #444;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        .channel-logo {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
+    /* === Sticky Top Bar === */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-primary);
+      padding: 12px 16px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .channel-name {
-            font-size: 16px;
-            font-weight: bold;
-        }
-    </style>
+    .top-bar h1 {
+      font-size: 1.2rem;
+      flex: 1;
+      text-align: center;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* === Scrollable Content === */
+    .scrollable-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      padding-bottom: 70px; /* Make space for bottom tab bar */
+    }
+
+    .channel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+    }
+
+    .channel-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .channel-card:active {
+      background: var(--bg-secondary);
+    }
+
+    .channel-logo {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #ddd;
+    }
+
+    .channel-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 8px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .fav-icon {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      color: #ffcc00;
+      font-size: 1rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .channel-card.fav .fav-icon {
+      opacity: 1;
+    }
+
+    /* === Sticky Bottom Tab Bar === */
+    .bottom-tabs {
+      position: sticky;
+      bottom: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-around;
+      background: var(--bg-primary);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 8px 0;
+    }
+
+    .tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 6px 0;
+      width: 33%;
+      opacity: 0.7;
+    }
+
+    .tab.active {
+      opacity: 1;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .tab i {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    /* Messages */
+    .message {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-primary);
+      opacity: 0.7;
+    }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Choose Your Channel</h1>
+  <!-- Top Title Bar -->
+  <div class="top-bar">
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <i class="fas fa-moon"></i>
+    </button>
+    <h1>Tamil Christian TV</h1>
+    <div style="width: 36px;"></div> <!-- Spacer for alignment -->
+  </div>
+
+  <!-- Scrollable Channel List -->
+  <div class="scrollable-content">
+    <div class="channel-grid" id="channelGrid">
+      <div class="message">Loading channels…</div>
     </div>
+  </div>
 
-    <div class="channel-grid" id="channelGrid"></div>
+  <!-- Bottom Tabs -->
+  <div class="bottom-tabs">
+    <a href="index.html" class="tab active" id="tab-tv">
+      <i class="fas fa-tv"></i>
+      <span>TV</span>
+    </a>
+    <a href="#" class="tab" id="tab-fav">
+      <i class="fas fa-heart"></i>
+      <span>Favourites</span>
+    </a>
+    <a href="#" class="tab" id="tab-about">
+      <i class="fas fa-info-circle"></i>
+      <span>About Us</span>
+    </a>
+  </div>
 
-    <script>
-        // Fetch channel data from GitHub
-        async function fetchChannels() {
-            const response = await fetch('https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json');
-            const channels = await response.json();
-            return channels;
-        }
+  <script>
+    // =============== Theme Toggle ===============
+    const htmlRoot = document.getElementById('htmlRoot');
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    htmlRoot.setAttribute('data-theme', savedTheme);
+    themeToggleBtn.innerHTML = savedTheme === 'dark' 
+      ? '<i class="fas fa-moon"></i>' 
+      : '<i class="fas fa-sun"></i>';
 
-        // Generate channel grid
-        async function loadChannels() {
-            const grid = document.getElementById('channelGrid');
-            const channels = await fetchChannels();
+    themeToggleBtn.addEventListener('click', () => {
+      const current = htmlRoot.getAttribute('data-theme');
+      const newTheme = current === 'dark' ? 'light' : 'dark';
+      htmlRoot.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      themeToggleBtn.innerHTML = newTheme === 'dark' 
+        ? '<i class="fas fa-moon"></i>' 
+        : '<i class="fas fa-sun"></i>';
+    });
 
-            channels.forEach(channel => {
-                const card = document.createElement('div');
-                card.className = 'channel-card';
-                card.innerHTML = `
-                    <img src="${channel.logo}" class="channel-logo" alt="${channel.name}">
-                    <div class="channel-name">${channel.name}</div>
-                `;
-                card.onclick = () => openPlayer(channel.id);
-                grid.appendChild(card);
-            });
-        }
+    // =============== Favourites ===============
+    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+    const channelGrid = document.getElementById('channelGrid');
 
-        function openPlayer(channelId) {
-            // Redirect to player page with channel ID parameter
-            window.location.href = `player.html?channel=${channelId}`;
-        }
+    function saveFavourites() {
+      localStorage.setItem('favourites', JSON.stringify(favourites));
+    }
 
-        // Load channels on page load
-        loadChannels();
-    </script>
+    function isFavourite(id) {
+      return favourites.includes(id);
+    }
+
+    function toggleFavourite(id) {
+      if (isFavourite(id)) {
+        favourites = favourites.filter(f => f !== id);
+      } else {
+        favourites.push(id);
+      }
+      saveFavourites();
+      renderChannels(currentView === 'fav' ? 'fav' : 'all');
+    }
+
+    // =============== Navigation Tabs ===============
+    let currentView = 'all'; // 'all' or 'fav'
+
+    document.getElementById('tab-tv').addEventListener('click', (e) => {
+      e.preventDefault();
+      currentView = 'all';
+      updateTabActive('tv');
+      renderChannels('all');
+    });
+
+    document.getElementById('tab-fav').addEventListener('click', (e) => {
+      e.preventDefault();
+      currentView = 'fav';
+      updateTabActive('fav');
+      renderChannels('fav');
+    });
+
+    document.getElementById('tab-about').addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('About Us\n\nTamil Christian TV App\n© 2025');
+      // Or redirect to about.html if you create one
+    });
+
+    function updateTabActive(activeTab) {
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      if (activeTab === 'tv') document.getElementById('tab-tv').classList.add('active');
+      if (activeTab === 'fav') document.getElementById('tab-fav').classList.add('active');
+      if (activeTab === 'about') document.getElementById('tab-about').classList.add('active');
+    }
+
+    // =============== Channel Data ===============
+    let allChannels = [];
+
+    async function fetchChannels() {
+      try {
+        const response = await fetch('https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json');
+        if (!response.ok) throw new Error('Network error');
+        return await response.json();
+      } catch (err) {
+        console.error(err);
+        return [];
+      }
+    }
+
+    function openPlayer(channelId) {
+      window.location.href = `player.html?channel=${encodeURIComponent(channelId)}`;
+    }
+
+    function renderChannels(view = 'all') {
+      let channelsToShow = [];
+      if (view === 'fav') {
+        channelsToShow = allChannels.filter(ch => isFavourite(ch.id));
+      } else {
+        channelsToShow = allChannels;
+      }
+
+      if (channelsToShow.length === 0) {
+        channelGrid.innerHTML = `<div class="message">${view === 'fav' ? 'No favourites yet. Tap ❤️ to add!' : 'No channels available.'}</div>`;
+        return;
+      }
+
+      channelGrid.innerHTML = '';
+      channelsToShow.forEach(channel => {
+        const card = document.createElement('div');
+        card.className = `channel-card ${isFavourite(channel.id) ? 'fav' : ''}`;
+        card.innerHTML = `
+          <div class="fav-icon"><i class="fas fa-heart"></i></div>
+          <img src="${channel.logo || ''}" class="channel-logo" alt="${channel.name || 'Channel'}" onerror="this.style.display='none'">
+          <div class="channel-name">${channel.name || 'Unnamed'}</div>
+        `;
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('.fav-icon')) {
+            toggleFavourite(channel.id);
+          } else {
+            openPlayer(channel.id);
+          }
+        });
+        channelGrid.appendChild(card);
+      });
+    }
+
+    // =============== Init ===============
+    (async () => {
+      allChannels = await fetchChannels();
+      renderChannels('all');
+    })();
+  </script>
 </body>
 </html>
