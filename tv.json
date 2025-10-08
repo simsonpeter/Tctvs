@@ -112,6 +112,24 @@
     "name": "Holy Land TV",
     "logo": "https://static.wixstatic.com/media/3d2e01_6603076b79904a05a3be7118f2b279fd~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
     "streamUrl": "https://play.applelive.in/holylandtv/holylandtv.m3u8"
+  },
+  {
+    "id": 20,
+    "name": "J King TV",
+    "logo": "https://static.wixstatic.com/media/a37571_1c089c955bef4ee6b26591febf2a19db~mv2.jpeg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpeg",
+    "streamUrl": "https://live.brightmeltech.in/jkingtv/jkingtv.m3u8"
+  },
+  {
+    "id": 21,
+    "name": "Jeeva Oli TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_b6911d20f2fb4750b087dda982c398ca~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://jaeppiyar.livebox.co.in/jeevaolitvhls/live.m3u8"
+  },
+  {
+    "id": 22,
+    "name": "Jesus Alive TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_ea12da6c29b44ba3b93430bbf77f5d1c~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://play.applelive.in/jesusalivetv/jesusalivetv.m3u8"
   }
   
 ]
