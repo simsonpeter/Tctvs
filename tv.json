@@ -130,6 +130,54 @@
     "name": "Jesus Alive TV",
     "logo": "https://static.wixstatic.com/media/3d2e01_ea12da6c29b44ba3b93430bbf77f5d1c~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
     "streamUrl": "https://play.applelive.in/jesusalivetv/jesusalivetv.m3u8"
+  },
+  {
+    "id": 23,
+    "name": "Joy Goodnews TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_993552ebecc84db9a7a7023af794781f~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://play.applelive.in/joygoodnewstv/joygoodnewstv.m3u8"
+  },
+  {
+    "id": 24,
+    "name": "Life TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_18a2f143f23e4f45b135a06e26277ce8~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
+    "streamUrl": "https://lifetv.livebox.co.in/lifetvhls/lifetv.m3u8"
+  },
+  {
+    "id": 25,
+    "name": "Life TV Plus",
+    "logo": "https://static.wixstatic.com/media/3d2e01_18a2f143f23e4f45b135a06e26277ce8~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
+    "streamUrl": "https://lifetv.livebox.co.in/lifetvtamilhls/live.m3u8"
+  },
+  {
+    "id": 26,
+    "name": "Love Joy TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_79339d4d5f5b4f8d9508d0926285edc0~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://live.brightmeltech.in/lovejoytv/lovejoytv.m3u8"
+  },
+  {
+    "id": 27,
+    "name": "Mahimai TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_89faabdbe8cb4692bcdcaf38fe99e6d1~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://ktismaservers.in:3161/live/mahimaitvlive.m3u8"
+  },
+  {
+    "id": 28,
+    "name": "Meetpar TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_1e26616c56594213b2addb28b56f17bd~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://server1.thewebworld.in:3066/hybrid/play.m3u8"
+  },
+   {
+    "id": 29,
+    "name": "Nambikkai TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_0ee176c181864bd1bb8ebc77ecb556e9~mv2.png/v1/fill/w_201,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://mk9qa7n8qwyb-hls-live.wmncdn.net/nambikkaitv/live.stream/chunks.m3u8"
+  },
+  {
+    "id": 30,
+    "name": "New Manna TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_6bace0dd9dc942a69a8221647b184ce3~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
+    "streamUrl": "https://ktismaservers.in:3587/multi_live/play_480.m3u8"
   }
   
 ]
