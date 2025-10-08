@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>TV Player</title>
-  <!-- Video.js CSS (cleaned URL) -->
+  <!-- Video.js CSS -->
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <style>
     * {
@@ -23,7 +23,6 @@
       overflow: hidden;
     }
 
-    /* === Top Bar === */
     .top-bar {
       position: sticky;
       top: 0;
@@ -60,28 +59,25 @@
       text-overflow: ellipsis;
     }
 
-    /* === Video Container === */
     .video-container {
       flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100%;
       background: #000;
-      padding: 0;
     }
 
+    /* Ensure Video.js fills container */
     .video-js {
       width: 100% !important;
       height: 100% !important;
       background: #000;
     }
 
-    /* Hide native controls on mobile for cleaner look (Video.js handles it) */
-    video {
-      outline: none;
+    /* Force controls to appear */
+    .vjs-control-bar {
+      opacity: 1 !important;
+      visibility: visible !important;
     }
 
-    /* Loading / Error */
     .status-overlay {
       position: absolute;
       top: 50%;
@@ -101,34 +97,29 @@
   </style>
 </head>
 <body>
-  <!-- Top Navigation -->
   <div class="top-bar">
-    <button class="back-btn" onclick="window.history.back()" aria-label="Go back">
-      ←
-    </button>
+    <button class="back-btn" onclick="window.history.back()" aria-label="Go back">←</button>
     <div class="channel-name" id="channelName">Loading…</div>
   </div>
 
-  <!-- Video Player -->
   <div class="video-container">
     <video
       id="tv-player"
       class="video-js vjs-default-skin vjs-big-play-centered"
       controls
       playsinline
-      webkit-playsinline
+      webkit-playsinline="true"
       preload="auto"
       data-setup='{}'>
     </video>
   </div>
 
-  <!-- Status Overlay -->
   <div class="status-overlay" id="statusOverlay">Loading stream…</div>
 
-  <!-- Video.js -->
+  <!-- Video.js + HLS support -->
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
   <script>
-    // Fix: No trailing spaces in URLs
     const TV_JSON_URL = 'https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json';
 
     async function fetchChannels() {
@@ -137,9 +128,9 @@
       return await res.json();
     }
 
-    function showStatus(message) {
+    function showStatus(msg) {
       const el = document.getElementById('statusOverlay');
-      el.textContent = message;
+      el.textContent = msg;
       el.classList.add('visible');
     }
 
@@ -150,34 +141,35 @@
     async function initPlayer() {
       const urlParams = new URLSearchParams(window.location.search);
       const channelId = parseInt(urlParams.get('channel'));
-      
-      if (!channelId) {
-        showStatus('Invalid channel');
-        return;
-      }
+      if (!channelId) return showStatus('No channel selected');
 
       try {
         const channels = await fetchChannels();
         const channel = channels.find(ch => ch.id === channelId);
-
-        if (!channel) {
-          showStatus('Channel not found');
-          return;
-        }
+        if (!channel) return showStatus('Channel not found');
 
         document.getElementById('channelName').textContent = channel.name;
-        showStatus('Connecting…');
+        showStatus('Preparing player…');
 
-        // Initialize Video.js
+        // Ensure HLS is supported
+        if (videojs.getTech('Html5').isSupported()) {
+          videojs.Html5Hlsjs = videojs-contrib-hls;
+        }
+
         const player = videojs('tv-player', {
           controls: true,
-          autoplay: true,
+          autoplay: false, // Let user tap play (avoids iOS autoplay block)
           preload: 'auto',
-          playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 2],
-          responsive: true,
-          fill: true,
           fluid: false,
-          inactivityTimeout: 2000 // Hide controls after 2s
+          responsive: true,
+          inactivityTimeout: 3000,
+          playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 2],
+          techOrder: ['html5'],
+          html5: {
+            hls: {
+              overrideNative: true // Use Video.js HLS instead of Safari native
+            }
+          }
         });
 
         player.src({
@@ -185,33 +177,26 @@
           type: 'application/x-mpegURL'
         });
 
-        // Handle playback
         player.ready(() => {
           hideStatus();
-          player.play().catch(e => {
-            console.warn('Autoplay blocked:', e);
-            showStatus('Tap play to start');
+          // Optional: auto-play if allowed
+          player.play().catch(() => {
+            // Autoplay failed – that’s OK; user can press play
           });
         });
 
-        // Error handling
         player.on('error', () => {
           const error = player.error();
-          console.error('Player error:', error);
-          showStatus('Stream error. Retrying…');
-          setTimeout(() => {
-            player.src({ src: channel.streamUrl, type: 'application/x-mpegURL' });
-            player.play();
-          }, 3000);
+          console.error('Playback error:', error);
+          showStatus('Stream unavailable. Please try again.');
         });
 
       } catch (err) {
         console.error('Init error:', err);
-        showStatus('Failed to load channel');
+        showStatus('Failed to load player');
       }
     }
 
-    // Start
     initPlayer();
   </script>
 </body>
