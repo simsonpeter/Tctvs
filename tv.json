@@ -96,10 +96,16 @@
     "streamUrl": "https://heaventv.livebox.co.in/heaventvhls/live.m3u8"
   },
   {
-    "id": 16,
+    "id": 17,
     "name": "Hebron TV",
     "logo": "https://static.wixstatic.com/media/3d2e01_9c80a3cef9474d55b392320a820d0440~mv2.png/v1/fill/w_151,h_152,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
     "streamUrl": "https://account20.livebox.co.in/charleshls/live.m3u8"
+  },
+  {
+    "id": 18,
+    "name": "Holy God TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_34ef4244836f4172b52ad573bab9d16f~mv2.jpg/v1/fill/w_151,h_151,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.jpg",
+    "streamUrl": "https://stream-215413.castr.net/65eea0ef43aef790b2d32071/live_3be90ef0becc11ef9f653ff46b25a04d/index.fmp4.m3u8"
   }
   
 ]
