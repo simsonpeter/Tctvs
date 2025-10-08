@@ -4,15 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>TV Player</title>
-  <!-- Video.js CSS -->
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: #000;
       color: white;
@@ -20,85 +14,51 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
     }
-
     .top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(10px);
       padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
     }
-
     .back-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      border: none;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.2); border: none; color: white;
+      display: flex; align-items: center; justify-content: center;
       cursor: pointer;
-      flex-shrink: 0;
     }
-
     .channel-name {
-      font-size: 1.1rem;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 1.1rem; font-weight: 600;
+      overflow: hidden; text-overflow: ellipsis;
     }
-
     .video-container {
       flex: 1;
       width: 100%;
-      background: #000;
     }
-
-    /* Ensure Video.js fills container */
     .video-js {
       width: 100% !important;
       height: 100% !important;
       background: #000;
     }
-
-    /* Force controls to appear */
-    .vjs-control-bar {
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-
-    .status-overlay {
+    .error-msg {
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.7);
-      padding: 16px 24px;
-      border-radius: 12px;
+      background: rgba(0,0,0,0.8);
+      padding: 16px;
+      border-radius: 10px;
       text-align: center;
-      z-index: 50;
+      z-index: 10;
       display: none;
     }
-
-    .status-overlay.visible {
-      display: block;
-    }
+    .error-msg.show { display: block; }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <button class="back-btn" onclick="window.history.back()" aria-label="Go back">←</button>
+    <button class="back-btn" onclick="window.history.back()">←</button>
     <div class="channel-name" id="channelName">Loading…</div>
   </div>
 
@@ -108,66 +68,56 @@
       class="video-js vjs-default-skin vjs-big-play-centered"
       controls
       playsinline
-      webkit-playsinline="true"
-      preload="auto"
-      data-setup='{}'>
+      webkit-playsinline
+      preload="auto">
     </video>
   </div>
 
-  <div class="status-overlay" id="statusOverlay">Loading stream…</div>
+  <div class="error-msg" id="errorMsg">Failed to load stream.</div>
 
-  <!-- Video.js + HLS support -->
+  <!-- Video.js 8+ includes HLS support (VHS) built-in -->
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-hls@5.15.0/dist/videojs-contrib-hls.min.js"></script>
   <script>
     const TV_JSON_URL = 'https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json';
 
     async function fetchChannels() {
       const res = await fetch(TV_JSON_URL);
-      if (!res.ok) throw new Error('Failed to load channels');
+      if (!res.ok) throw new Error('Channels not found');
       return await res.json();
     }
 
-    function showStatus(msg) {
-      const el = document.getElementById('statusOverlay');
-      el.textContent = msg;
-      el.classList.add('visible');
+    function showError(msg = 'Stream unavailable') {
+      document.getElementById('errorMsg').textContent = msg;
+      document.getElementById('errorMsg').classList.add('show');
     }
 
-    function hideStatus() {
-      document.getElementById('statusOverlay').classList.remove('visible');
+    function hideError() {
+      document.getElementById('errorMsg').classList.remove('show');
     }
 
     async function initPlayer() {
       const urlParams = new URLSearchParams(window.location.search);
       const channelId = parseInt(urlParams.get('channel'));
-      if (!channelId) return showStatus('No channel selected');
+      if (!channelId) return showError('No channel selected');
 
       try {
         const channels = await fetchChannels();
         const channel = channels.find(ch => ch.id === channelId);
-        if (!channel) return showStatus('Channel not found');
+        if (!channel) return showError('Channel not found');
 
         document.getElementById('channelName').textContent = channel.name;
-        showStatus('Preparing player…');
 
-        // Ensure HLS is supported
-        if (videojs.getTech('Html5').isSupported()) {
-          videojs.Html5Hlsjs = videojs-contrib-hls;
-        }
-
+        // Initialize Video.js with HLS support (built-in in v8+)
         const player = videojs('tv-player', {
           controls: true,
-          autoplay: false, // Let user tap play (avoids iOS autoplay block)
+          autoplay: false, // Must be false on mobile
           preload: 'auto',
-          fluid: false,
           responsive: true,
+          fluid: false,
           inactivityTimeout: 3000,
-          playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 2],
-          techOrder: ['html5'],
           html5: {
             hls: {
-              overrideNative: true // Use Video.js HLS instead of Safari native
+              overrideNative: true // Use VHS even on Safari
             }
           }
         });
@@ -178,22 +128,19 @@
         });
 
         player.ready(() => {
-          hideStatus();
-          // Optional: auto-play if allowed
-          player.play().catch(() => {
-            // Autoplay failed – that’s OK; user can press play
-          });
+          hideError();
+          console.log('Player ready for:', channel.name);
         });
 
         player.on('error', () => {
-          const error = player.error();
-          console.error('Playback error:', error);
-          showStatus('Stream unavailable. Please try again.');
+          const code = player.error()?.code;
+          console.error('Video.js error code:', code);
+          showError('Stream error (code ' + code + ')');
         });
 
       } catch (err) {
-        console.error('Init error:', err);
-        showStatus('Failed to load player');
+        console.error('Init failed:', err);
+        showError('Failed to load player');
       }
     }
 
