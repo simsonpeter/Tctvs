@@ -20,49 +20,91 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       backdrop-filter: blur(10px);
+      z-index: 10;
+      position: relative;
     }
-    .back-btn {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: rgba(255,255,255,0.2); border: none; color: white;
-      display: flex; align-items: center; justify-content: center;
+    .back-btn, .control-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
       cursor: pointer;
+      flex-shrink: 0;
     }
     .channel-name {
-      font-size: 1.1rem; font-weight: 600;
-      overflow: hidden; text-overflow: ellipsis;
+      font-size: 1.1rem;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .video-container {
       flex: 1;
       width: 100%;
+      background: #000;
+      position: relative;
     }
     .video-js {
       width: 100% !important;
       height: 100% !important;
       background: #000;
     }
-    .error-msg {
+    .error-overlay {
       position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.8);
-      padding: 16px;
-      border-radius: 10px;
-      text-align: center;
-      z-index: 10;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
       display: none;
     }
-    .error-msg.show { display: block; }
+    .error-overlay.show {
+      display: flex;
+    }
+    .error-overlay button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .audio-only-label {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.6);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      z-index: 15;
+      display: none;
+    }
+    .audio-only-label.show {
+      display: block;
+    }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <button class="back-btn" onclick="window.history.back()">←</button>
+    <button class="back-btn" onclick="window.history.back()" aria-label="Go back">←</button>
     <div class="channel-name" id="channelName">Loading…</div>
+    <button class="control-btn" id="audioToggle" title="Audio only" style="font-size:0.9rem;">🔊</button>
   </div>
 
   <div class="video-container">
+    <div class="audio-only-label" id="audioLabel">Audio Only</div>
     <video
       id="tv-player"
       class="video-js vjs-default-skin vjs-big-play-centered"
@@ -71,14 +113,18 @@
       webkit-playsinline
       preload="auto">
     </video>
+    <div class="error-overlay" id="errorOverlay">
+      <div>Live stream unavailable.</div>
+      <button id="retryBtn">Retry</button>
+    </div>
   </div>
 
-  <div class="error-msg" id="errorMsg">Failed to load stream.</div>
-
-  <!-- Video.js 8+ includes HLS support (VHS) built-in -->
+  <!-- Video.js (v8+ includes HLS & quality selector) -->
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
     const TV_JSON_URL = 'https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json';
+    let player = null;
+    let currentChannel = null;
 
     async function fetchChannels() {
       const res = await fetch(TV_JSON_URL);
@@ -86,39 +132,80 @@
       return await res.json();
     }
 
-    function showError(msg = 'Stream unavailable') {
-      document.getElementById('errorMsg').textContent = msg;
-      document.getElementById('errorMsg').classList.add('show');
+    function showError() {
+      document.getElementById('errorOverlay').classList.add('show');
     }
 
     function hideError() {
-      document.getElementById('errorMsg').classList.remove('show');
+      document.getElementById('errorOverlay').classList.remove('show');
     }
+
+    function setNowPlaying(channelId) {
+      // Save to localStorage so index.html can show "▶️ Live"
+      localStorage.setItem('nowPlayingChannelId', String(channelId));
+    }
+
+    function toggleAudioOnly() {
+      const container = document.querySelector('.video-container');
+      const label = document.getElementById('audioLabel');
+      const isAudioOnly = container.classList.contains('audio-only');
+
+      if (isAudioOnly) {
+        container.classList.remove('audio-only');
+        label.classList.remove('show');
+        document.getElementById('audioToggle').textContent = '🔊';
+      } else {
+        container.classList.add('audio-only');
+        label.classList.add('show');
+        document.getElementById('audioToggle').textContent = '📺';
+      }
+
+      // Keep audio playing
+      if (player) {
+        player.play(); // Ensure playback continues
+      }
+    }
+
+    // Hide video in audio-only mode
+    const style = document.createElement('style');
+    style.textContent = `
+      .video-container.audio-only .video-js video {
+        display: none !important;
+      }
+      .video-container.audio-only .vjs-poster {
+        display: none !important;
+      }
+    `;
+    document.head.appendChild(style);
 
     async function initPlayer() {
       const urlParams = new URLSearchParams(window.location.search);
       const channelId = parseInt(urlParams.get('channel'));
-      if (!channelId) return showError('No channel selected');
+      if (!channelId) return showError();
 
       try {
         const channels = await fetchChannels();
         const channel = channels.find(ch => ch.id === channelId);
-        if (!channel) return showError('Channel not found');
+        if (!channel) return showError();
 
+        currentChannel = channel;
         document.getElementById('channelName').textContent = channel.name;
+        setNowPlaying(channelId);
 
-        // Initialize Video.js with HLS support (built-in in v8+)
-        const player = videojs('tv-player', {
+        player = videojs('tv-player', {
           controls: true,
-          autoplay: false, // Must be false on mobile
+          autoplay: false,
           preload: 'auto',
           responsive: true,
-          fluid: false,
           inactivityTimeout: 3000,
           html5: {
             hls: {
-              overrideNative: true // Use VHS even on Safari
+              overrideNative: true
             }
+          },
+          // Enable built-in quality selector (if multiple bitrates)
+          plugins: {
+            // Video.js 8+ auto-enables quality menu if levels exist
           }
         });
 
@@ -129,18 +216,32 @@
 
         player.ready(() => {
           hideError();
-          console.log('Player ready for:', channel.name);
+          console.log('Playing:', channel.name);
         });
 
         player.on('error', () => {
-          const code = player.error()?.code;
-          console.error('Video.js error code:', code);
-          showError('Stream error (code ' + code + ')');
+          console.error('Stream error');
+          showError();
+        });
+
+        // Setup audio toggle
+        document.getElementById('audioToggle').addEventListener('click', toggleAudioOnly);
+
+        // Retry button
+        document.getElementById('retryBtn').addEventListener('click', () => {
+          hideError();
+          if (player && currentChannel) {
+            player.src({
+              src: currentChannel.streamUrl,
+              type: 'application/x-mpegURL'
+            });
+            player.play().catch(() => {});
+          }
         });
 
       } catch (err) {
         console.error('Init failed:', err);
-        showError('Failed to load player');
+        showError();
       }
     }
 
