@@ -1,112 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV Player</title>
-    <!-- Video.js CSS -->
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #000;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>TV Player</title>
+  <!-- Video.js CSS (cleaned URL) -->
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .player-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    body {
+      background: #000;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-        .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+    /* === Top Bar === */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
 
-        .channel-info {
-            text-align: center;
-            margin: 20px 0;
-        }
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
 
-        .channel-title {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+    .channel-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-        .video-js {
-            width: 100%;
-            height: 70vh;
-        }
-    </style>
+    /* === Video Container === */
+    .video-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      padding: 0;
+    }
+
+    .video-js {
+      width: 100% !important;
+      height: 100% !important;
+      background: #000;
+    }
+
+    /* Hide native controls on mobile for cleaner look (Video.js handles it) */
+    video {
+      outline: none;
+    }
+
+    /* Loading / Error */
+    .status-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.7);
+      padding: 16px 24px;
+      border-radius: 12px;
+      text-align: center;
+      z-index: 50;
+      display: none;
+    }
+
+    .status-overlay.visible {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    <button class="back-button" onclick="window.history.back()">← Back</button>
-    
-    <div class="player-container">
-        <div class="channel-info">
-            <div class="channel-title" id="channelTitle"></div>
-        </div>
-        <!-- Video.js Player -->
-        <video id="tv-player" class="video-js vjs-default-skin" controls preload="auto" data-setup='{}'>
-            <source id="video-source" type="application/x-mpegURL">
-        </video>
-    </div>
+  <!-- Top Navigation -->
+  <div class="top-bar">
+    <button class="back-btn" onclick="window.history.back()" aria-label="Go back">
+      ←
+    </button>
+    <div class="channel-name" id="channelName">Loading…</div>
+  </div>
 
-    <!-- Video.js Script -->
-    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-    <script>
-        // Fetch channel data from GitHub
-        async function fetchChannels() {
-            const response = await fetch('https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json');
-            const channels = await response.json();
-            return channels;
+  <!-- Video Player -->
+  <div class="video-container">
+    <video
+      id="tv-player"
+      class="video-js vjs-default-skin vjs-big-play-centered"
+      controls
+      playsinline
+      webkit-playsinline
+      preload="auto"
+      data-setup='{}'>
+    </video>
+  </div>
+
+  <!-- Status Overlay -->
+  <div class="status-overlay" id="statusOverlay">Loading stream…</div>
+
+  <!-- Video.js -->
+  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+  <script>
+    // Fix: No trailing spaces in URLs
+    const TV_JSON_URL = 'https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json';
+
+    async function fetchChannels() {
+      const res = await fetch(TV_JSON_URL);
+      if (!res.ok) throw new Error('Failed to load channels');
+      return await res.json();
+    }
+
+    function showStatus(message) {
+      const el = document.getElementById('statusOverlay');
+      el.textContent = message;
+      el.classList.add('visible');
+    }
+
+    function hideStatus() {
+      document.getElementById('statusOverlay').classList.remove('visible');
+    }
+
+    async function initPlayer() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const channelId = parseInt(urlParams.get('channel'));
+      
+      if (!channelId) {
+        showStatus('Invalid channel');
+        return;
+      }
+
+      try {
+        const channels = await fetchChannels();
+        const channel = channels.find(ch => ch.id === channelId);
+
+        if (!channel) {
+          showStatus('Channel not found');
+          return;
         }
 
-        // Get channel ID from URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const channelId = urlParams.get('channel');
+        document.getElementById('channelName').textContent = channel.name;
+        showStatus('Connecting…');
 
-        // Load selected channel
-        async function loadChannel() {
-            const channels = await fetchChannels();
-            const selectedChannel = channels.find(ch => ch.id === parseInt(channelId));
+        // Initialize Video.js
+        const player = videojs('tv-player', {
+          controls: true,
+          autoplay: true,
+          preload: 'auto',
+          playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 2],
+          responsive: true,
+          fill: true,
+          fluid: false,
+          inactivityTimeout: 2000 // Hide controls after 2s
+        });
 
-            if (selectedChannel) {
-                document.getElementById('channelTitle').textContent = selectedChannel.name;
+        player.src({
+          src: channel.streamUrl,
+          type: 'application/x-mpegURL'
+        });
 
-                // Initialize Video.js player
-                const player = videojs('tv-player', {
-                    controls: true,
-                    autoplay: true,
-                    preload: 'auto'
-                });
+        // Handle playback
+        player.ready(() => {
+          hideStatus();
+          player.play().catch(e => {
+            console.warn('Autoplay blocked:', e);
+            showStatus('Tap play to start');
+          });
+        });
 
-                // Set the video source
-                player.src({
-                    src: selectedChannel.streamUrl,
-                    type: 'application/x-mpegURL' // For HLS streams
-                });
+        // Error handling
+        player.on('error', () => {
+          const error = player.error();
+          console.error('Player error:', error);
+          showStatus('Stream error. Retrying…');
+          setTimeout(() => {
+            player.src({ src: channel.streamUrl, type: 'application/x-mpegURL' });
+            player.play();
+          }, 3000);
+        });
 
-                player.ready(() => {
-                    player.play();
-                });
-            } else {
-                document.getElementById('channelTitle').textContent = "Channel not found";
-            }
-        }
+      } catch (err) {
+        console.error('Init error:', err);
+        showStatus('Failed to load channel');
+      }
+    }
 
-        // Load channel on page load
-        loadChannel();
-    </script>
+    // Start
+    initPlayer();
+  </script>
 </body>
 </html>
