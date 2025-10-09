@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>TV Player</title>
+  <!-- Video.js CSS -->
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     * {
@@ -37,7 +39,7 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.15);
+      background: rgba(255, 255, 255, 0.15);
       border: none;
       color: white;
       display: flex;
@@ -58,6 +60,30 @@
       text-align: center;
     }
 
+    .control-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .control-btn:hover,
+    .control-btn.active {
+      background: rgba(74, 144, 226, 0.3);
+    }
+
+    .control-btn i {
+      font-size: 1.1rem;
+    }
+
     .video-container {
       flex: 1;
       width: 100%;
@@ -69,6 +95,31 @@
       width: 100% !important;
       height: 100% !important;
       background: #000;
+    }
+
+    /* Hide video in audio-only mode */
+    .video-container.audio-only .video-js video {
+      display: none !important;
+    }
+    .video-container.audio-only .vjs-poster {
+      display: none !important;
+    }
+
+    .audio-only-label {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #4a90e2;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      z-index: 15;
+      display: none;
+    }
+
+    .audio-only-label.show {
+      display: block;
     }
 
     .error-overlay {
@@ -111,10 +162,13 @@
   <div class="top-bar">
     <button class="back-btn" onclick="window.history.back()" aria-label="Go back">←</button>
     <div class="channel-name" id="channelName">Loading…</div>
-    <div style="width: 40px;"></div>
+    <button class="control-btn" id="audioToggle" aria-label="Switch to audio-only mode">
+      <i class="fas fa-headphones" id="audioIcon"></i>
+    </button>
   </div>
 
   <div class="video-container">
+    <div class="audio-only-label" id="audioLabel">Audio Only</div>
     <video
       id="tv-player"
       class="video-js vjs-default-skin vjs-big-play-centered"
@@ -124,15 +178,17 @@
       preload="auto">
     </video>
     <div class="error-overlay" id="errorOverlay">
-      <div>Livestream unavailable.<br>Please try another channel.</div>
+      <div>Live stream unavailable.<br>Please try again.</div>
       <button id="retryBtn">Retry</button>
     </div>
   </div>
 
+  <!-- Video.js -->
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
   <script>
     const TV_JSON_URL = 'https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json';
     let player = null;
+    let currentChannel = null;
 
     async function fetchChannels() {
       const res = await fetch(TV_JSON_URL);
@@ -148,11 +204,37 @@
       document.getElementById('errorOverlay').classList.remove('show');
     }
 
-    // Determine base URL for proxy
-    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    const BASE_URL = isLocal 
-      ? 'http://localhost:3000' // or your Vercel preview URL
-      : ''; // same origin (Vercel)
+    function setNowPlaying(channelId) {
+      localStorage.setItem('nowPlayingChannelId', String(channelId));
+    }
+
+    function toggleAudioOnly() {
+      const container = document.querySelector('.video-container');
+      const icon = document.getElementById('audioIcon');
+      const label = document.getElementById('audioLabel');
+      const btn = document.getElementById('audioToggle');
+      const isAudioOnly = container.classList.contains('audio-only');
+
+      if (isAudioOnly) {
+        // Back to video
+        container.classList.remove('audio-only');
+        icon.className = 'fas fa-headphones';
+        label.classList.remove('show');
+        btn.setAttribute('aria-label', 'Switch to audio-only mode');
+        btn.classList.remove('active');
+      } else {
+        // Audio only
+        container.classList.add('audio-only');
+        icon.className = 'fas fa-tv';
+        label.classList.add('show');
+        btn.setAttribute('aria-label', 'Switch back to video');
+        btn.classList.add('active');
+      }
+
+      if (player) {
+        player.play().catch(() => {});
+      }
+    }
 
     async function initPlayer() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -164,11 +246,9 @@
         const channel = channels.find(ch => ch.id === channelId);
         if (!channel) return showError();
 
+        currentChannel = channel;
         document.getElementById('channelName').textContent = channel.name;
-        localStorage.setItem('nowPlayingChannelId', String(channelId));
-
-        // Use Vercel proxy in production, direct in local dev (optional)
-        const streamUrl = `${BASE_URL}/api/proxy/${channelId}`;
+        setNowPlaying(channelId);
 
         player = videojs('tv-player', {
           controls: true,
@@ -184,7 +264,7 @@
         });
 
         player.src({
-          src: streamUrl,
+          src: channel.streamUrl,
           type: 'application/x-mpegURL'
         });
 
@@ -193,14 +273,18 @@
         });
 
         player.on('error', () => {
-          console.error('Playback error:', player.error());
+          console.error('Playback error');
           showError();
         });
 
+        // Setup buttons
+        document.getElementById('audioToggle').addEventListener('click', toggleAudioOnly);
         document.getElementById('retryBtn').addEventListener('click', () => {
           hideError();
-          player.src({ src: streamUrl, type: 'application/x-mpegURL' });
-          player.play().catch(() => {});
+          if (player && currentChannel) {
+            player.src({ src: currentChannel.streamUrl, type: 'application/x-mpegURL' });
+            player.play().catch(() => {});
+          }
         });
 
       } catch (err) {
