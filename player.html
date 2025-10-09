@@ -6,8 +6,10 @@
   <title>TV Player</title>
   <!-- Video.js CSS -->
   <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-  <!-- Font Awesome for icons -->
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Cast SDK (required for Chromecast) -->
+  <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -39,7 +41,7 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255,255,255,0.15);
       border: none;
       color: white;
       display: flex;
@@ -64,7 +66,7 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255,255,255,0.15);
       border: none;
       color: white;
       display: flex;
@@ -95,14 +97,6 @@
       width: 100% !important;
       height: 100% !important;
       background: #000;
-    }
-
-    /* Hide video in audio-only mode */
-    .video-container.audio-only .video-js video {
-      display: none !important;
-    }
-    .video-container.audio-only .vjs-poster {
-      display: none !important;
     }
 
     .audio-only-label {
@@ -183,12 +177,26 @@
     </div>
   </div>
 
-  <!-- Video.js -->
+  <!-- Video.js + Cast Plugin -->
   <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+  <!-- Video.js Google Cast Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/@silvermine/videojs-chromecast@1.2.0/dist/silvermine-videojs-chromecast.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@silvermine/videojs-chromecast@1.2.0/dist/silvermine-videojs-chromecast.css" />
+
   <script>
+    // Initialize Cast framework
+    window['__onGCastApiAvailable'] = function(loaded, errorInfo) {
+      if (loaded) {
+        console.log('Google Cast SDK loaded');
+      } else {
+        console.warn('Google Cast SDK not available:', errorInfo);
+      }
+    };
+
     const TV_JSON_URL = 'https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json';
     let player = null;
     let currentChannel = null;
+    let backgroundAudio = null;
 
     async function fetchChannels() {
       const res = await fetch(TV_JSON_URL);
@@ -196,7 +204,7 @@
       return await res.json();
     }
 
-    function showError() {
+    function showError(msg = 'Stream unavailable') {
       document.getElementById('errorOverlay').classList.add('show');
     }
 
@@ -216,23 +224,30 @@
       const isAudioOnly = container.classList.contains('audio-only');
 
       if (isAudioOnly) {
-        // Back to video
+        if (backgroundAudio) {
+          backgroundAudio.pause();
+          backgroundAudio = null;
+        }
         container.classList.remove('audio-only');
         icon.className = 'fas fa-headphones';
         label.classList.remove('show');
         btn.setAttribute('aria-label', 'Switch to audio-only mode');
         btn.classList.remove('active');
+        if (player) player.play().catch(() => {});
       } else {
-        // Audio only
+        if (player) player.pause();
         container.classList.add('audio-only');
         icon.className = 'fas fa-tv';
         label.classList.add('show');
         btn.setAttribute('aria-label', 'Switch back to video');
         btn.classList.add('active');
-      }
 
-      if (player) {
-        player.play().catch(() => {});
+        backgroundAudio = new Audio();
+        backgroundAudio.src = currentChannel.streamUrl;
+        backgroundAudio.playsinline = true;
+        backgroundAudio.play().catch(err => {
+          alert('Background audio not allowed. Keep screen on to listen.');
+        });
       }
     }
 
@@ -250,6 +265,7 @@
         document.getElementById('channelName').textContent = channel.name;
         setNowPlaying(channelId);
 
+        // Initialize Video.js with Chromecast support
         player = videojs('tv-player', {
           controls: true,
           autoplay: false,
@@ -259,6 +275,12 @@
           html5: {
             hls: {
               overrideNative: true
+            }
+          },
+          // Enable Chromecast
+          plugins: {
+            chromecast: {
+              // Optional: customize receiver app (use default Google one)
             }
           }
         });
@@ -277,7 +299,6 @@
           showError();
         });
 
-        // Setup buttons
         document.getElementById('audioToggle').addEventListener('click', toggleAudioOnly);
         document.getElementById('retryBtn').addEventListener('click', () => {
           hideError();
