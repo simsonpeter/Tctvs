@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Tamil Christian TV</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg-primary: #0f0f0f;
+      --bg-secondary: #1a1a1a;
+      --text-primary: #ffffff;
+      --card-bg: #222;
+      --accent: #4a90e2;
+      --border-radius: 12px;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --text-primary: #000000;
+      --card-bg: #ffffff;
+      --accent: #1a73e8;
+    }
+
+    [data-theme="gold"] {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #141414;
+      --text-primary: #ffffff;
+      --card-bg: #1e1e1e;
+      --accent: #FFD700;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-primary);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .top-bar h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      flex: 1;
+      text-align: center;
+    }
+
+    .control-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 10px;
+      margin: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.2);
+      color: white;
+      font-size: 1rem;
+    }
+
+    [data-theme="light"] .search-box {
+      background: #fff;
+      color: #000;
+      border-color: #ccc;
+    }
+
+    .scrollable-content {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 70px;
+    }
+
+    .channel-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+      padding: 0 12px;
+    }
+
+    .channel-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .channel-card:active {
+      transform: scale(0.98);
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    }
+
+    .channel-logo {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #444;
+    }
+
+    .channel-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 6px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .badges {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+      justify-content: center;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+
+    .badge-live {
+      background: rgba(229, 9, 20, 0.2);
+      color: #e50914;
+      font-weight: bold;
+    }
+
+    .badge-audio {
+      background: rgba(255, 215, 0, 0.15);
+      color: #FFD700;
+    }
+
+    .bottom-tabs {
+      position: sticky;
+      bottom: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-around;
+      background: var(--bg-primary);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 8px 0;
+    }
+
+    .tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 6px 0;
+      width: 33%;
+      opacity: 0.7;
+    }
+
+    .tab.active {
+      opacity: 1;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .tab i {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .message {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-primary);
+      opacity: 0.7;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 1000;
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 215, 0, 0.3);
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <button class="control-btn" id="playLastBtn" title="Play last channel" style="display:none;">
+      <i class="fas fa-play"></i>
+    </button>
+    <h1>Tamil Christian TV</h1>
+    <button class="control-btn" id="themeToggle" aria-label="Toggle theme">
+      <i class="fas fa-moon"></i>
+    </button>
+  </div>
+
+  <input type="text" class="search-box" id="searchInput" placeholder="Search channels...">
+
+  <div class="scrollable-content">
+    <div class="channel-grid" id="channelGrid">
+      <div class="message">Loading channels…</div>
+    </div>
+  </div>
+
+  <div class="bottom-tabs">
+    <a href="index.html" class="tab active" id="tab-tv">
+      <i class="fas fa-tv"></i>
+      <span>TV</span>
+    </a>
+    <a href="#" class="tab" id="tab-fav">
+      <i class="fas fa-heart"></i>
+      <span>Favourites</span>
+    </a>
+    <a href="about.html" class="tab" id="tab-about">
+      <i class="fas fa-info-circle"></i>
+      <span>About Us</span>
+    </a>
+  </div>
+
+  <div id="toast">Added to Favourites!</div>
+
+  <script>
+    // =============== Theme ===============
+    const htmlRoot = document.getElementById('htmlRoot');
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    htmlRoot.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    function updateThemeIcon(theme) {
+      if (theme === 'dark') themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+      else if (theme === 'light') themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+      else themeToggleBtn.innerHTML = '<i class="fas fa-gem"></i>';
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      const themes = ['dark', 'light', 'gold'];
+      const current = htmlRoot.getAttribute('data-theme');
+      const currentIndex = themes.indexOf(current);
+      const newTheme = themes[(currentIndex + 1) % themes.length];
+      htmlRoot.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    });
+
+    // =============== Toast ===============
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.style.opacity = '1';
+      setTimeout(() => toast.style.opacity = '0', 2000);
+    }
+
+    // =============== Ripple + Haptic ===============
+    function createRipple(event, element) {
+      const ripple = document.createElement('div');
+      ripple.classList.add('ripple');
+      const rect = element.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+      ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+      element.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    }
+
+    function hapticFeedback() {
+      if (window.navigator.vibrate) navigator.vibrate(20);
+    }
+
+    // =============== Favourites ===============
+    let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
+    let allChannels = [];
+    let currentView = 'all';
+
+    function saveFavourites() {
+      localStorage.setItem('favourites', JSON.stringify(favourites));
+    }
+
+    function isFavourite(id) {
+      return favourites.includes(id);
+    }
+
+    function toggleFavourite(id) {
+      const wasFav = isFavourite(id);
+      if (wasFav) {
+        favourites = favourites.filter(f => f !== id);
+        showToast('Removed from Favourites');
+      } else {
+        favourites.push(id);
+        showToast('Added to Favourites!');
+      }
+      saveFavourites();
+      if (currentView === 'fav') renderChannels('fav');
+    }
+
+    // =============== Long Press ===============
+    function attachLongPress(element, channelId) {
+      let pressTimer = null;
+      const start = (e) => {
+        pressTimer = setTimeout(() => {
+          toggleFavourite(channelId);
+          hapticFeedback();
+          createRipple(e, element);
+        }, 600);
+      };
+      const cancel = () => { if (pressTimer) clearTimeout(pressTimer); };
+      element.addEventListener('touchstart', start, { passive: true });
+      element.addEventListener('touchmove', cancel, { passive: true });
+      element.addEventListener('touchend', cancel, { passive: true });
+      element.addEventListener('mousedown', start);
+      element.addEventListener('mouseup', cancel);
+      element.addEventListener('mouseleave', cancel);
+    }
+
+    // =============== Tabs ===============
+    function updateTabActive(tabName) {
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      if (tabName === 'tv') document.getElementById('tab-tv').classList.add('active');
+      if (tabName === 'fav') document.getElementById('tab-fav').classList.add('active');
+      if (tabName === 'about') document.getElementById('tab-about').classList.add('active');
+    }
+
+    document.getElementById('tab-tv').addEventListener('click', (e) => {
+      e.preventDefault();
+      currentView = 'all';
+      updateTabActive('tv');
+      renderChannels('all');
+    });
+
+    document.getElementById('tab-fav').addEventListener('click', (e) => {
+      e.preventDefault();
+      currentView = 'fav';
+      updateTabActive('fav');
+      renderChannels('fav');
+    });
+
+    // About tab handled by href="about.html"
+
+    // =============== Play Last ===============
+    const lastChannelId = localStorage.getItem('lastPlayedChannelId');
+    const playLastBtn = document.getElementById('playLastBtn');
+    if (lastChannelId) {
+      playLastBtn.style.display = 'flex';
+      playLastBtn.onclick = () => {
+        window.location.href = `player.html?channel=${lastChannelId}`;
+      };
+    }
+
+    // =============== Search ===============
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      if (currentView === 'all') {
+        const term = e.target.value.trim().toLowerCase();
+        if (term === '') {
+          renderChannels('all');
+        } else {
+          const filtered = allChannels.filter(ch => 
+            ch.name.toLowerCase().includes(term)
+          );
+          renderFiltered(filtered);
+        }
+      }
+    });
+
+    // =============== High-Quality Audio Channels ===============
+    const highQualityIds = [3, 4, 14, 15]; // Angel TV Europe/India, Gospel TV, Grace TV
+
+    function renderFiltered(channels) {
+      const grid = document.getElementById('channelGrid');
+      grid.innerHTML = '';
+      if (channels.length === 0) {
+        grid.innerHTML = '<div class="message">No matching channels</div>';
+        return;
+      }
+      const nowPlayingId = localStorage.getItem('nowPlayingChannelId');
+      channels.forEach(channel => {
+        const card = document.createElement('div');
+        card.className = 'channel-card';
+        let badges = '<div class="badges"><span class="badge badge-live">LIVE</span>';
+        if (highQualityIds.includes(channel.id)) {
+          badges += '<span class="badge badge-audio">🔊 HD</span>';
+        }
+        badges += '</div>';
+        let html = `
+          <img src="${channel.logo || ''}" class="channel-logo" alt="${channel.name}" onerror="this.style.background='#555'">
+          <div class="channel-name">${channel.name}</div>
+          ${badges}
+        `;
+        if (String(channel.id) === nowPlayingId) {
+          html += `<div style="position:absolute;top:6px;right:6px;color:#4a90e2;font-size:0.8rem;">▶️</div>`;
+        }
+        card.innerHTML = html;
+        card.addEventListener('click', () => {
+          localStorage.setItem('lastPlayedChannelId', channel.id);
+          localStorage.removeItem('nowPlayingChannelId');
+          window.location.href = `player.html?channel=${channel.id}`;
+        });
+        attachLongPress(card, channel.id);
+        grid.appendChild(card);
+      });
+    }
+
+    // =============== Fetch & Render ===============
+    async function fetchChannels() {
+      try {
+        const response = await fetch('https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json');
+        return await response.json();
+      } catch (err) {
+        return [];
+      }
+    }
+
+    function renderChannels(view = 'all') {
+      const grid = document.getElementById('channelGrid');
+      let channelsToShow = view === 'fav'
+        ? allChannels.filter(ch => isFavourite(ch.id))
+        : allChannels;
+
+      if (channelsToShow.length === 0) {
+        grid.innerHTML = `<div class="message">${
+          view === 'fav' 
+            ? 'No favourites yet. Long-press any channel to add!' 
+            : 'No channels available. Check your connection.'
+        }</div>`;
+        return;
+      }
+
+      grid.innerHTML = '';
+      const nowPlayingId = localStorage.getItem('nowPlayingChannelId');
+      channelsToShow.forEach(channel => {
+        const card = document.createElement('div');
+        card.className = 'channel-card';
+        let badges = '<div class="badges"><span class="badge badge-live">LIVE</span>';
+        if (highQualityIds.includes(channel.id)) {
+          badges += '<span class="badge badge-audio">🔊 HD</span>';
+        }
+        badges += '</div>';
+        let html = `
+          <img src="${channel.logo || ''}" class="channel-logo" alt="${channel.name}" onerror="this.style.background='#555'">
+          <div class="channel-name">${channel.name}</div>
+          ${badges}
+        `;
+        if (String(channel.id) === nowPlayingId) {
+          html += `<div style="position:absolute;top:6px;right:6px;color:#4a90e2;font-size:0.8rem;">▶️</div>`;
+        }
+        card.innerHTML = html;
+        card.addEventListener('click', () => {
+          localStorage.setItem('lastPlayedChannelId', channel.id);
+          localStorage.removeItem('nowPlayingChannelId');
+          window.location.href = `player.html?channel=${channel.id}`;
+        });
+        attachLongPress(card, channel.id);
+        grid.appendChild(card);
+      });
+    }
+
+    // =============== Init ===============
+    (async () => {
+      allChannels = await fetchChannels();
+      renderChannels('all');
+    })();
+  </script>
+</body>
+</html>
