@@ -202,6 +202,12 @@
     "name": "Uthamiyae TV",
     "logo": "https://uthamiyae.tv/wp-content/uploads/2017/09/100x100-UTHAMIYAE-TV-copy.png",
     "streamUrl": "https://kali.vdopanel.com:3169/stream/play.m3u8"
+  },
+  {
+    "id": 33,
+    "name": "Vaanmalar TV",
+    "logo": "https://yt3.googleusercontent.com/a1-Y4CcBzV9q28rj0vIBZ9KFTVB2FhpvJJqkPDDnlTQyH-yfjc1WHcUTiKA7wEmPljqJt6mOV1E=s160-c-k-c0x00ffffff-no-rj",
+    "streamUrl": "https://571561.gvideo.io/videos/571561_iK45KeBrlqkpNaI/index-s0q3570v1-v1-a1.m3u8"
   }
   
 ]
