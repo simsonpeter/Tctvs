@@ -132,12 +132,6 @@
     "streamUrl": "https://play.applelive.in/jesusalivetv/jesusalivetv.m3u8"
   },
   {
-    "id": 34,
-    "name": "Joshua TV",
-    "logo": "https://joshuatv.co.in/wp-content/uploads/2025/06/J-for-Promo-1small.png",
-    "streamUrl": "https://joshuatv-hs1.tamilstream.in/joshuatv/joshuatv/tracks-v1a1/mono.m3u8"
-  },
-  {
     "id": 23,
     "name": "Joy Goodnews TV",
     "logo": "https://static.wixstatic.com/media/3d2e01_993552ebecc84db9a7a7023af794781f~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
@@ -179,7 +173,7 @@
     "logo": "https://myjesus.tv/wp-content/uploads/2025/04/MJT_justLogo-1-scaled-e1744866565414.png",
     "streamUrl": "https://5790d294af2dc.streamlock.net/myjesustv/myjesustv/chunklist_w1143800765.m3u8"
   },
-   {
+  {
     "id": 30,
     "name": "Nambikkai TV",
     "logo": "https://static.wixstatic.com/media/3d2e01_0ee176c181864bd1bb8ebc77ecb556e9~mv2.png/v1/fill/w_201,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
@@ -190,18 +184,6 @@
     "name": "New Manna TV",
     "logo": "https://static.wixstatic.com/media/3d2e01_6bace0dd9dc942a69a8221647b184ce3~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
     "streamUrl": "https://ktismaservers.in:3587/multi_live/play_480.m3u8"
-  },
-  {
-    "id": 35,
-    "name": "Praise God TV",
-    "logo": "https://www.praisegodtv.net/early/assets/images/pgtv-logo-128x128.png",
-    "streamUrl": "https://ingest4-1163.boxcast.com/truculent-leg/tqj3qswc6rx56sxwqx7u/720p-byteranges-ext.m3u8?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9pbmdlc3Q0LTExNjMuYm94Y2FzdC5jb20vdHJ1Y3VsZW50LWxlZy90cWozcXN3YzZyeDU2c3h3cXg3dS83MjBwLWJ5dGVyYW5nZXMtZXh0Lm0zdTgiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3NjAxNTUzNjF9fX1dfQ__&Signature=KUsKWaRCdaMEGt9n0oaO-SC2JTiNldedzs6Ti6NHB9q92GWLoVEhCFZM50OQrPGQKVFlp2yHtuP2GnaA63SiVw7pbA5Tvow4KVZmKG7GpLKqbvVGm9J2SgA87aTYLWqICcjjL7TMSOp~sxibnPE97XbESykBA2OVs-0Q~AJphvViWyuj42qG8RX2dHjWkMGtAc79XzbGvMrOb-a58k1y5R55seJw4Y3PCA0ZkaQfEhTiFavz8csUpX8qsM7TFo7aAdoNtHQnB4hyuL1njc0xw7P9P7~JkHe4khMSBgiLEc-BYdHzDdG59kSwQ6GcGU1adgllwsdeNdQSUGRa5jGNEQ__&Key-Pair-Id=APKAJ7GUCBQUK6NTWZCA"
-  },
-  {
-    "id": ,
-    "name": "Ruah TV",
-    "logo": "https://static.wixstatic.com/media/3d2e01_7287c17e1cc546bba01c7638976bec1c~mv2.jpg/v1/fill/w_1385,h_1385,al_c,q_85/Ruah%20TV.jpg",
-    "streamUrl": "https://stream.onecloudlive.in/novamani/ruahtv/tracks-v1a1/mono.m3u8"
   },
   {
     "id": 32,
@@ -216,10 +198,27 @@
     "streamUrl": "https://kali.vdopanel.com:3169/stream/play.m3u8"
   },
   {
-    "id": 33,
+    "id": 34,
+    "name": "Joshua TV",
+    "logo": "https://joshuatv.co.in/wp-content/uploads/2025/06/J-for-Promo-1small.png",
+    "streamUrl": "https://joshuatv-hs1.tamilstream.in/joshuatv/joshuatv/tracks-v1a1/mono.m3u8"
+  },
+  {
+    "id": 35,
+    "name": "Praise God TV",
+    "logo": "https://www.praisegodtv.net/early/assets/images/pgtv-logo-128x128.png",
+    "streamUrl": "https://ingest4-1163.boxcast.com/truculent-leg/tqj3qswc6rx56sxwqx7u/720p-byteranges-ext.m3u8?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9pbmdlc3Q0LTExNjMuYm94Y2FzdC5jb20vdHJ1Y3VsZW50LWxlZy90cWozcXN3YzZyeDU2c3h3cXg3dS83MjBwLWJ5dGVyYW5nZXMtZXh0Lm0zdTgiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3NjAxNTUzNjF9fX1dfQ__&Signature=KUsKWaRCdaMEGt9n0oaO-SC2JTiNldedzs6Ti6NHB9q92GWLoVEhCFZM50OQrPGQKVFlp2yHtuP2GnaA63SiVw7pbA5Tvow4KVZmKG7GpLKqbvVGm9J2SgA87aTYLWqICcjjL7TMSOp~sxibnPE97XbESykBA2OVs-0Q~AJphvViWyuj42qG8RX2dHjWkMGtAc79XzbGvMrOb-a58k1y5R55seJw4Y3PCA0ZkaQfEhTiFavz8csUpX8qsM7TFo7aAdoNtHQnB4hyuL1njc0xw7P9P7~JkHe4khMSBgiLEc-BYdHzDdG59kSwQ6GcGU1adgllwsdeNdQSUGRa5jGNEQ__&Key-Pair-Id=APKAJ7GUCBQUK6NTWZCA"
+  },
+  {
+    "id": 36,
+    "name": "Ruah TV",
+    "logo": "https://static.wixstatic.com/media/3d2e01_7287c17e1cc546bba01c7638976bec1c~mv2.jpg/v1/fill/w_1385,h_1385,al_c,q_85/Ruah%20TV.jpg",
+    "streamUrl": "https://stream.onecloudlive.in/novamani/ruahtv/tracks-v1a1/mono.m3u8"
+  },
+  {
+    "id": 37,
     "name": "Vaanmalar TV",
     "logo": "https://yt3.googleusercontent.com/a1-Y4CcBzV9q28rj0vIBZ9KFTVB2FhpvJJqkPDDnlTQyH-yfjc1WHcUTiKA7wEmPljqJt6mOV1E=s160-c-k-c0x00ffffff-no-rj",
     "streamUrl": "https://571561.gvideo.io/videos/571561_iK45KeBrlqkpNaI/index-s0q3570v1-v1-a1.m3u8"
   }
-  
 ]
