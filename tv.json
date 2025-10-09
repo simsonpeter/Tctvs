@@ -187,6 +187,12 @@
   },
   {
     "id": 32,
+    "name": "Tamil Christian TV",
+    "logo": "https://tamilchristiantv.org/wp-content/uploads/2019/02/Tamil-Christian-TV.png",
+    "streamUrl": "https://server1.thewebworld.in:3797/stream/play.m3u8"
+  },
+  {
+    "id": 33,
     "name": "Uthamiyae TV",
     "logo": "https://uthamiyae.tv/wp-content/uploads/2017/09/100x100-UTHAMIYAE-TV-copy.png",
     "streamUrl": "https://kali.vdopanel.com:3169/stream/play.m3u8"
