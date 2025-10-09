@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>TV Player</title>
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+  <!-- Google Cast SDK -->
+  <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+  
+  <style>
+    /* ... your existing styles ... */
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <button class="back-btn" onclick="window.history.back()" aria-label="Go back">←</button>
+    <div class="channel-name" id="channelName">Loading…</div>
+    
+    <google-cast-launcher 
+      id="castButton" 
+      style="width: 40px; height: 40px; display: none; border: none;">
+    </google-cast-launcher>
+    
+    <button class="control-btn" id="audioToggle" aria-label="Switch to audio-only mode">
+      <i class="fas fa-headphones" id="audioIcon"></i>
+    </button>
+  </div>
+
+  <!-- ... rest of your player.html unchanged ... -->
+
+  <script>
+    // ... your existing initPlayer() code ...
+
+    // Show Cast button when available
+    window['__onGCastApiAvailable'] = function(loaded) {
+      if (loaded) {
+        document.getElementById('castButton').style.display = 'block';
+      }
+    };
+  </script>
+</body>
+</html>
