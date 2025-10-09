@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="htmlRoot">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -19,6 +19,10 @@
       line-height: 1.6;
       padding: 0;
       margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
     }
 
     .top-bar {
@@ -53,6 +57,8 @@
     }
 
     .content {
+      flex: 1;
+      overflow-y: auto;
       padding: 24px;
       max-width: 600px;
       margin: 0 auto;
@@ -100,11 +106,45 @@
       font-weight: 600;
       color: #FFD700;
     }
+
+    /* === Bottom Tabs (same as index.html) === */
+    .bottom-tabs {
+      position: sticky;
+      bottom: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-around;
+      background: #0a0a0a;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 8px 0;
+    }
+
+    .tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 6px 0;
+      width: 33%;
+    }
+
+    .tab.active {
+      color: #FFD700;
+      font-weight: bold;
+    }
+
+    .tab i {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
   </style>
 </head>
 <body>
   <div class="top-bar">
-    <button class="back-btn" onclick="window.history.back()" aria-label="Go back">
+    <button class="back-btn" onclick="window.location.href='index.html'" aria-label="Go back">
       ←
     </button>
     <div class="page-title">About Us</div>
@@ -136,14 +176,41 @@
     </div>
   </div>
 
+  <!-- Bottom Tabs -->
+  <div class="bottom-tabs">
+    <a href="index.html" class="tab">
+      <i class="fas fa-tv"></i>
+      <span>TV</span>
+    </a>
+    <a href="#" class="tab" onclick="window.location.href='index.html#favourites'; return false;">
+      <i class="fas fa-heart"></i>
+      <span>Favourites</span>
+    </a>
+    <a href="about.html" class="tab active">
+      <i class="fas fa-info-circle"></i>
+      <span>About Us</span>
+    </a>
+  </div>
+
   <script>
-    // Optional: Add theme support if needed
+    // Optional: Apply saved theme
     const savedTheme = localStorage.getItem('theme') || 'dark';
     if (savedTheme === 'light') {
       document.body.style.background = '#ffffff';
       document.body.style.color = '#000000';
       document.querySelector('.top-bar').style.background = '#f8f9fa';
       document.querySelector('.top-bar').style.borderBottom = '1px solid #ddd';
+      document.querySelector('.bottom-tabs').style.background = '#f8f9fa';
+      document.querySelector('.bottom-tabs').style.borderTop = '1px solid #ddd';
+    } else if (savedTheme === 'gold') {
+      document.body.style.background = '#0a0a0a';
+      document.querySelector('.top-bar').style.background = '#0a0a0a';
+      document.querySelector('.bottom-tabs').style.background = '#0a0a0a';
+      document.querySelectorAll('.tab').forEach(tab => {
+        if (tab.classList.contains('active')) {
+          tab.style.color = '#FFD700';
+        }
+      });
     }
   </script>
 </body>
