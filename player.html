@@ -94,6 +94,18 @@
       --google-cast-launcher-active-color: #4a90e2;
     }
 
+    /* Fallback cast button when Chrome Cast API is not available */
+    .cast-btn:not([style*="display: none"]) {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Hide cast button if Chrome Cast API is not available */
+    .cast-btn[style*="display: none"] {
+      display: none !important;
+    }
+
     .video-container {
       flex: 1;
       width: 100%;
@@ -172,10 +184,10 @@
     <button class="back-btn" onclick="window.history.back()" aria-label="Go back">←</button>
     <div class="channel-name" id="channelName">Loading…</div>
     
-    <!-- Cast button (hidden by default) -->
-    <google-cast-launcher id="castButton" style="display: none;"></google-cast-launcher>
+    <!-- Cast button (always visible) -->
+    <google-cast-launcher id="castButton" class="control-btn cast-btn"></google-cast-launcher>
     
-    <!-- Audio toggle (shown by default) -->
+    <!-- Audio toggle (always visible) -->
     <button class="control-btn" id="audioToggle" aria-label="Switch to audio-only mode">
       <i class="fas fa-headphones" id="audioIcon"></i>
     </button>
@@ -282,10 +294,9 @@
 
         player.ready(() => {
           hideError();
-          // ✅ Only now show Cast button (stream is loaded)
-          if (typeof chrome !== 'undefined' && chrome.cast) {
-            document.getElementById('castButton').style.display = 'block';
-            document.getElementById('audioToggle').style.display = 'none';
+          // ✅ Cast button is always visible, but hide it if Chrome Cast API is not available
+          if (typeof chrome === 'undefined' || !chrome.cast) {
+            document.getElementById('castButton').style.display = 'none';
           }
         });
 
@@ -311,7 +322,9 @@
 
     // Optional: Show Cast button if framework loads (fallback)
     window['__onGCastApiAvailable'] = function(loaded) {
-      // We rely on player.ready() instead for safety
+      if (loaded && typeof chrome !== 'undefined' && chrome.cast) {
+        document.getElementById('castButton').style.display = 'block';
+      }
     };
 
     initPlayer();
