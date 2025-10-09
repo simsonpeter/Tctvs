@@ -6,23 +6,6 @@
   <title>Tamil Christian TV</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    :root {
-      --bg-primary: #0f0f0f;
-      --bg-secondary: #1a1a1a;
-      --text-primary: #ffffff;
-      --card-bg: #222;
-      --accent: #4a90e2;
-      --border-radius: 12px;
-    }
-
-    [data-theme="light"] {
-      --bg-primary: #ffffff;
-      --bg-secondary: #f5f5f5;
-      --text-primary: #000000;
-      --card-bg: #ffffff;
-      --accent: #1a73e8;
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
@@ -30,143 +13,132 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: var(--bg-secondary);
-      color: var(--text-primary);
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      overflow: hidden;
+      background: #000;
+      color: white;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      overflow-x: hidden;
     }
 
-    /* === Sticky Top Bar === */
     .top-bar {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: var(--bg-primary);
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
       padding: 12px 16px;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 600;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 12px;
     }
 
-    .top-bar h1 {
-      font-size: 1.2rem;
+    .logo {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #e50914;
+    }
+
+    .search-box {
       flex: 1;
-      text-align: center;
-    }
-
-    .theme-toggle {
-      background: none;
+      background: rgba(255,255,255,0.15);
       border: none;
-      color: var(--text-primary);
+      border-radius: 20px;
+      color: white;
+      padding: 8px 16px;
+      font-size: 0.95rem;
+      margin: 0 12px;
+      display: none; /* Hidden by default; shown only in TV tab */
+    }
+
+    .scroll-container {
+      padding: 0 16px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
       font-size: 1.2rem;
-      cursor: pointer;
-      width: 36px;
-      height: 36px;
+      margin: 20px 0 12px;
+      font-weight: bold;
+    }
+
+    .row {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 8px 0;
+      scrollbar-width: none;
     }
 
-    /* === Scrollable Content === */
-    .scrollable-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px;
-      padding-bottom: 70px; /* Make space for bottom tab bar */
-    }
-
-    .channel-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 14px;
+    .row::-webkit-scrollbar {
+      display: none;
     }
 
     .channel-card {
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      padding: 12px 8px;
-      text-align: center;
-      cursor: pointer;
-      min-height: 140px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      min-width: 140px;
       position: relative;
+      cursor: pointer;
     }
 
-    .channel-card:active {
-      background: var(--bg-secondary);
-    }
-
-    .channel-logo {
-      width: 70px;
-      height: 70px;
+    .channel-poster {
+      width: 140px;
+      height: 210px;
+      border-radius: 8px;
       object-fit: cover;
-      border-radius: 50%;
-      background: #ddd;
+      background: #333;
     }
 
     .channel-name {
+      margin-top: 6px;
       font-size: 0.9rem;
-      font-weight: 500;
-      margin-top: 8px;
-      max-width: 100%;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
-    .fav-icon {
+    .live-badge {
       position: absolute;
-      top: 6px;
-      right: 6px;
-      color: #ffcc00;
-      font-size: 1rem;
-      opacity: 0;
-      transition: opacity 0.2s;
+      top: 8px;
+      left: 8px;
+      background: rgba(229, 9, 20, 0.8);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: bold;
     }
 
-    .channel-card.fav .fav-icon {
-      opacity: 1;
+    /* Tab Content Areas */
+    .tab-content {
+      display: none;
     }
 
-    /* === Sticky Bottom Tab Bar === */
+    .tab-content.active {
+      display: block;
+      height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
     .bottom-tabs {
       position: sticky;
       bottom: 0;
       z-index: 100;
       display: flex;
       justify-content: space-around;
-      background: var(--bg-primary);
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 8px 0;
+      background: #000;
+      border-top: 1px solid #333;
+      padding: 10px 0;
     }
 
     .tab {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      color: var(--text-primary);
+      color: #888;
       text-decoration: none;
-      font-size: 0.8rem;
-      padding: 6px 0;
-      width: 33%;
-      opacity: 0.7;
+      font-size: 0.75rem;
     }
 
     .tab.active {
-      opacity: 1;
-      font-weight: bold;
-      color: var(--accent);
+      color: white;
     }
 
     .tab i {
@@ -174,176 +146,282 @@
       margin-bottom: 4px;
     }
 
-    /* Messages */
-    .message {
-      text-align: center;
+    #toast {
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 1000;
+    }
+
+    .about-content {
       padding: 20px;
-      color: var(--text-primary);
-      opacity: 0.7;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
-  <!-- Top Title Bar -->
   <div class="top-bar">
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-      <i class="fas fa-moon"></i>
-    </button>
-    <h1>Tamil Christian TV</h1>
-    <div style="width: 36px;"></div> <!-- Spacer for alignment -->
+    <div class="logo">TCTVS</div>
+    <input type="text" class="search-box" id="searchInput" placeholder="Search channels...">
   </div>
 
-  <!-- Scrollable Channel List -->
-  <div class="scrollable-content">
-    <div class="channel-grid" id="channelGrid">
-      <div class="message">Loading channels…</div>
+  <!-- TV Tab Content -->
+  <div class="tab-content active" id="tab-tv-content">
+    <div class="hero" id="hero" style="height:200px; background:linear-gradient(to right, #000, transparent); position:relative; margin:0 16px; border-radius:12px; overflow:hidden; display:none;">
+      <img id="hero-img" style="width:100%; height:100%; object-fit:cover; filter:brightness(0.6);">
+      <div style="position:absolute; bottom:16px; left:16px; max-width:70%;">
+        <h2 id="hero-title" style="font-size:1.8rem; margin-bottom:8px;"></h2>
+        <button id="hero-play" style="background:#e50914; color:white; border:none; padding:8px 16px; border-radius:4px; font-weight:bold;">▶ Play</button>
+      </div>
+    </div>
+
+    <div class="scroll-container">
+      <div class="section-title">All Channels</div>
+      <div class="row" id="all-row"></div>
+
+      <div class="section-title" id="continue-title" style="display:none;">Continue Watching</div>
+      <div class="row" id="continue-row"></div>
+
+      <div class="section-title">Favourites</div>
+      <div class="row" id="favourites-row">
+        <div class="message" style="color:#888; padding:20px 0;">Long-press any channel to add</div>
+      </div>
     </div>
   </div>
 
-  <!-- Bottom Tabs -->
+  <!-- Favourites Tab Content -->
+  <div class="tab-content" id="tab-fav-content">
+    <div class="scroll-container">
+      <div class="section-title">My Favourites</div>
+      <div class="row" id="fav-only-row"></div>
+    </div>
+  </div>
+
+  <!-- About Tab Content -->
+  <div class="tab-content" id="tab-about-content">
+    <div class="about-content">
+      <h2>About TCTVS</h2>
+      <p>Tamil Christian TV Stations (TCTVS) brings Christ-centered Tamil television content to your mobile device.</p>
+      <p>Watch live sermons, worship, Bible teachings, and family programs from trusted ministries.</p>
+      <p>© 2025 TCTVS • Made with ❤️ for the Kingdom</p>
+    </div>
+  </div>
+
   <div class="bottom-tabs">
-    <a href="index.html" class="tab active" id="tab-tv">
+    <a href="#" class="tab active" data-tab="tv">
       <i class="fas fa-tv"></i>
       <span>TV</span>
     </a>
-    <a href="#" class="tab" id="tab-fav">
+    <a href="#" class="tab" data-tab="fav">
       <i class="fas fa-heart"></i>
       <span>Favourites</span>
     </a>
-    <a href="#" class="tab" id="tab-about">
+    <a href="#" class="tab" data-tab="about">
       <i class="fas fa-info-circle"></i>
       <span>About Us</span>
     </a>
   </div>
 
+  <div id="toast">Added to Favourites!</div>
+
   <script>
-    // =============== Theme Toggle ===============
-    const htmlRoot = document.getElementById('htmlRoot');
-    const themeToggleBtn = document.getElementById('themeToggle');
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    htmlRoot.setAttribute('data-theme', savedTheme);
-    themeToggleBtn.innerHTML = savedTheme === 'dark' 
-      ? '<i class="fas fa-moon"></i>' 
-      : '<i class="fas fa-sun"></i>';
-
-    themeToggleBtn.addEventListener('click', () => {
-      const current = htmlRoot.getAttribute('data-theme');
-      const newTheme = current === 'dark' ? 'light' : 'dark';
-      htmlRoot.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-      themeToggleBtn.innerHTML = newTheme === 'dark' 
-        ? '<i class="fas fa-moon"></i>' 
-        : '<i class="fas fa-sun"></i>';
-    });
-
-    // =============== Favourites ===============
+    let allChannels = [];
     let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
-    const channelGrid = document.getElementById('channelGrid');
+    let heroIndex = 0;
+    let heroInterval = null;
+
+    // =============== Tab Switching ===============
+    function switchTab(tabName) {
+      // Update active tab
+      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+
+      // Show correct content
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      document.getElementById(`tab-${tabName}-content`).classList.add('active');
+
+      // Show/hide search
+      const searchBox = document.querySelector('.search-box');
+      if (tabName === 'tv') {
+        searchBox.style.display = 'block';
+      } else {
+        searchBox.style.display = 'none';
+      }
+
+      // Render favourites tab if needed
+      if (tabName === 'fav') {
+        renderFavOnly();
+      }
+    }
+
+    // =============== Utilities ===============
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.opacity = '1';
+      setTimeout(() => t.style.opacity = '0', 2000);
+    }
 
     function saveFavourites() {
       localStorage.setItem('favourites', JSON.stringify(favourites));
     }
 
-    function isFavourite(id) {
+    function isFav(id) {
       return favourites.includes(id);
     }
 
-    function toggleFavourite(id) {
-      if (isFavourite(id)) {
+    function toggleFav(id) {
+      if (isFav(id)) {
         favourites = favourites.filter(f => f !== id);
+        showToast('Removed from Favourites');
       } else {
         favourites.push(id);
+        showToast('Added to Favourites!');
       }
       saveFavourites();
-      renderChannels(currentView === 'fav' ? 'fav' : 'all');
+      renderFavourites();
+      renderFavOnly();
     }
 
-    // =============== Navigation Tabs ===============
-    let currentView = 'all'; // 'all' or 'fav'
-
-    document.getElementById('tab-tv').addEventListener('click', (e) => {
-      e.preventDefault();
-      currentView = 'all';
-      updateTabActive('tv');
-      renderChannels('all');
-    });
-
-    document.getElementById('tab-fav').addEventListener('click', (e) => {
-      e.preventDefault();
-      currentView = 'fav';
-      updateTabActive('fav');
-      renderChannels('fav');
-    });
-
-    document.getElementById('tab-about').addEventListener('click', (e) => {
-      e.preventDefault();
-      alert('About Us\n\nTamil Christian TV App\n© 2025');
-      // Or redirect to about.html if you create one
-    });
-
-    function updateTabActive(activeTab) {
-      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-      if (activeTab === 'tv') document.getElementById('tab-tv').classList.add('active');
-      if (activeTab === 'fav') document.getElementById('tab-fav').classList.add('active');
-      if (activeTab === 'about') document.getElementById('tab-about').classList.add('active');
+    function attachLongPress(el, id) {
+      let timer = null;
+      const start = () => timer = setTimeout(() => toggleFav(id), 600);
+      const cancel = () => { if (timer) clearTimeout(timer); };
+      el.addEventListener('touchstart', start, { passive: true });
+      el.addEventListener('touchmove', cancel, { passive: true });
+      el.addEventListener('touchend', cancel, { passive: true });
+      el.addEventListener('mousedown', start);
+      el.addEventListener('mouseup', cancel);
+      el.addEventListener('mouseleave', cancel);
     }
 
-    // =============== Channel Data ===============
-    let allChannels = [];
-
-    async function fetchChannels() {
-      try {
-        const response = await fetch('https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json');
-        if (!response.ok) throw new Error('Network error');
-        return await response.json();
-      } catch (err) {
-        console.error(err);
-        return [];
-      }
+    function createCard(channel, showLive = false) {
+      const card = document.createElement('div');
+      card.className = 'channel-card';
+      card.innerHTML = `
+        <img src="${channel.logo || ''}" class="channel-poster" alt="${channel.name}" onerror="this.style.background='#444'">
+        <div class="channel-name">${channel.name}</div>
+        ${showLive ? '<div class="live-badge">LIVE</div>' : ''}
+      `;
+      card.addEventListener('click', () => {
+        localStorage.removeItem('nowPlayingChannelId');
+        window.location.href = `player.html?channel=${channel.id}`;
+      });
+      attachLongPress(card, channel.id);
+      return card;
     }
 
-    function openPlayer(channelId) {
-      window.location.href = `player.html?channel=${encodeURIComponent(channelId)}`;
-    }
-
-    function renderChannels(view = 'all') {
-      let channelsToShow = [];
-      if (view === 'fav') {
-        channelsToShow = allChannels.filter(ch => isFavourite(ch.id));
+    // =============== Rendering ===============
+    function renderFavourites() {
+      const row = document.getElementById('favourites-row');
+      const favs = allChannels.filter(ch => isFav(ch.id));
+      if (favs.length === 0) {
+        row.innerHTML = '<div class="message" style="color:#888; padding:20px 0;">Long-press any channel to add</div>';
       } else {
-        channelsToShow = allChannels;
+        row.innerHTML = '';
+        favs.forEach(ch => row.appendChild(createCard(ch)));
       }
+    }
 
-      if (channelsToShow.length === 0) {
-        channelGrid.innerHTML = `<div class="message">${view === 'fav' ? 'No favourites yet. Tap ❤️ to add!' : 'No channels available.'}</div>`;
+    function renderFavOnly() {
+      const row = document.getElementById('fav-only-row');
+      const favs = allChannels.filter(ch => isFav(ch.id));
+      if (favs.length === 0) {
+        row.innerHTML = '<div class="message" style="color:#888; padding:40px 0; text-align:center;">No favourites yet.<br>Go to TV tab and long-press a channel to add.</div>';
+      } else {
+        row.innerHTML = '';
+        favs.forEach(ch => row.appendChild(createCard(ch)));
+      }
+    }
+
+    function renderAll(filtered = null) {
+      const channels = filtered || allChannels;
+      const row = document.getElementById('all-row');
+      row.innerHTML = '';
+      channels.forEach(ch => row.appendChild(createCard(ch)));
+    }
+
+    function renderContinue() {
+      const nowPlayingId = localStorage.getItem('nowPlayingChannelId');
+      if (!nowPlayingId) {
+        document.getElementById('continue-title').style.display = 'none';
+        document.getElementById('continue-row').innerHTML = '';
         return;
       }
 
-      channelGrid.innerHTML = '';
-      channelsToShow.forEach(channel => {
-        const card = document.createElement('div');
-        card.className = `channel-card ${isFavourite(channel.id) ? 'fav' : ''}`;
-        card.innerHTML = `
-          <div class="fav-icon"><i class="fas fa-heart"></i></div>
-          <img src="${channel.logo || ''}" class="channel-logo" alt="${channel.name || 'Channel'}" onerror="this.style.display='none'">
-          <div class="channel-name">${channel.name || 'Unnamed'}</div>
-        `;
-        card.addEventListener('click', (e) => {
-          if (e.target.closest('.fav-icon')) {
-            toggleFavourite(channel.id);
-          } else {
-            openPlayer(channel.id);
-          }
-        });
-        channelGrid.appendChild(card);
+      const ch = allChannels.find(c => String(c.id) === nowPlayingId);
+      if (!ch) return;
+
+      document.getElementById('continue-title').style.display = 'block';
+      const row = document.getElementById('continue-row');
+      row.innerHTML = '';
+      row.appendChild(createCard(ch, true));
+    }
+
+    function updateHero() {
+      if (allChannels.length === 0) return;
+      const candidates = allChannels.filter(ch => isFav(ch.id)).length > 0 
+        ? allChannels.filter(ch => isFav(ch.id)) 
+        : allChannels;
+      heroIndex = (heroIndex + 1) % candidates.length;
+      const heroChannel = candidates[heroIndex];
+      document.getElementById('hero').style.display = 'block';
+      document.getElementById('hero-img').src = heroChannel.logo;
+      document.getElementById('hero-title').textContent = heroChannel.name;
+      document.getElementById('hero-play').onclick = () => {
+        localStorage.removeItem('nowPlayingChannelId');
+        window.location.href = `player.html?channel=${heroChannel.id}`;
+      };
+    }
+
+    function setupSearch() {
+      const input = document.getElementById('searchInput');
+      input.addEventListener('input', () => {
+        const term = input.value.trim().toLowerCase();
+        if (term === '') {
+          renderAll();
+        } else {
+          const results = allChannels.filter(ch => 
+            ch.name.toLowerCase().includes(term)
+          );
+          renderAll(results);
+        }
       });
     }
 
     // =============== Init ===============
-    (async () => {
-      allChannels = await fetchChannels();
-      renderChannels('all');
-    })();
+    async function init() {
+      const res = await fetch('https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json');
+      allChannels = await res.json();
+
+      renderAll();
+      renderContinue();
+      renderFavourites();
+
+      setupSearch();
+      updateHero();
+      heroInterval = setInterval(updateHero, 8000);
+
+      // Setup tab listeners
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          e.preventDefault();
+          const tabName = tab.getAttribute('data-tab');
+          switchTab(tabName);
+        });
+      });
+    }
+
+    init();
   </script>
 </body>
 </html>
