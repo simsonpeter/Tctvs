@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>TV Player - Big Screen Mode</title>
+  <!-- Video.js CSS -->
+  <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Google Cast SDK -->
+  <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #000;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Cinema-style top bar */
+    .top-bar {
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 70%, transparent 100%);
+      backdrop-filter: blur(20px);
+      z-index: 10;
+      position: relative;
+      min-height: 120px;
+      transition: opacity 0.5s ease;
+    }
+
+    .top-bar.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .back-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .back-btn:hover {
+      background: rgba(74, 144, 226, 0.3);
+      border-color: #4a90e2;
+      transform: scale(1.1);
+      box-shadow: 0 8px 32px rgba(74, 144, 226, 0.4);
+    }
+
+    .channel-name {
+      font-size: 2.4rem;
+      font-weight: 800;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+      text-align: center;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);
+      background: linear-gradient(45deg, #ffffff, #4a90e2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .control-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .control-btn:hover,
+    .control-btn.active {
+      background: rgba(74, 144, 226, 0.3);
+      border-color: #4a90e2;
+      transform: scale(1.1);
+      box-shadow: 0 8px 32px rgba(74, 144, 226, 0.4);
+    }
+
+    .control-btn i {
+      font-size: 2rem;
+    }
+
+    /* Big screen cast button styling */
+    google-cast-launcher {
+      width: 80px;
+      height: 80px;
+      border-radius: 16px;
+      --google-cast-launcher-color: white;
+      --google-cast-launcher-active-color: #4a90e2;
+    }
+
+    /* Fallback cast button when Chrome Cast API is not available */
+    .cast-btn:not([style*="display: none"]) {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Hide cast button if Chrome Cast API is not available */
+    .cast-btn[style*="display: none"] {
+      display: none !important;
+    }
+
+    .video-container {
+      flex: 1;
+      width: 100%;
+      background: #000;
+      position: relative;
+    }
+
+    .video-js {
+      width: 100% !important;
+      height: 100% !important;
+      background: #000;
+    }
+
+    /* Cinema-style video controls */
+    .video-js .vjs-control-bar {
+      height: 120px !important;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.9)) !important;
+      backdrop-filter: blur(20px);
+      transition: opacity 0.5s ease;
+    }
+
+    .video-js .vjs-button {
+      width: 80px !important;
+      height: 80px !important;
+      font-size: 2.4rem !important;
+      border-radius: 12px !important;
+      margin: 0 8px !important;
+      transition: all 0.3s ease !important;
+    }
+
+    .video-js .vjs-button:hover {
+      transform: scale(1.1) !important;
+      box-shadow: 0 8px 32px rgba(74, 144, 226, 0.4) !important;
+    }
+
+    .video-js .vjs-progress-control {
+      height: 12px !important;
+      margin: 0 20px !important;
+    }
+
+    .video-js .vjs-play-progress {
+      background: linear-gradient(90deg, #4a90e2, #357abd) !important;
+      height: 12px !important;
+      border-radius: 6px !important;
+    }
+
+    .video-js .vjs-volume-level {
+      background: linear-gradient(90deg, #4a90e2, #357abd) !important;
+    }
+
+    .video-container.audio-only .video-js video {
+      display: none !important;
+    }
+    .video-container.audio-only .vjs-poster {
+      display: none !important;
+    }
+
+    .audio-only-label {
+      position: absolute;
+      top: 32px;
+      right: 32px;
+      background: rgba(0, 0, 0, 0.9);
+      color: #4a90e2;
+      padding: 16px 32px;
+      border-radius: 20px;
+      font-size: 1.6rem;
+      font-weight: 700;
+      z-index: 15;
+      display: none;
+      border: 3px solid #4a90e2;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(74, 144, 226, 0.3);
+    }
+
+    .audio-only-label.show {
+      display: block;
+    }
+
+    .error-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.98);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+      display: none;
+    }
+
+    .error-overlay.show {
+      display: flex;
+    }
+
+    .error-overlay div {
+      margin-bottom: 40px;
+      text-align: center;
+      font-size: 2.4rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .error-overlay button {
+      padding: 20px 40px;
+      background: linear-gradient(45deg, #4a90e2, #357abd);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 32px rgba(74, 144, 226, 0.4);
+    }
+
+    .error-overlay button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 48px rgba(74, 144, 226, 0.6);
+    }
+
+    /* Big screen mode indicator */
+    .bigscreen-mode-indicator {
+      position: absolute;
+      top: 32px;
+      left: 32px;
+      background: linear-gradient(45deg, #4a90e2, #357abd);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 24px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      z-index: 15;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(74, 144, 226, 0.4);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Cinema-style overlay controls */
+    .cinema-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .cinema-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .cinema-controls {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 24px 48px;
+      border-radius: 20px;
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .cinema-btn {
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .cinema-btn:hover {
+      background: rgba(74, 144, 226, 0.3);
+      border-color: #4a90e2;
+      transform: scale(1.15);
+      box-shadow: 0 12px 48px rgba(74, 144, 226, 0.5);
+    }
+
+    .cinema-btn i {
+      font-size: 2.8rem;
+    }
+
+    /* Ambient lighting effect */
+    .ambient-light {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at center, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Full screen enhancements */
+    .video-js.vjs-fullscreen .top-bar {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+    }
+
+    .video-js.vjs-fullscreen .bigscreen-mode-indicator {
+      display: none;
+    }
+
+    /* Responsive adjustments for ultra-wide screens */
+    @media (min-width: 2560px) {
+      .top-bar {
+        padding: 32px 60px;
+        min-height: 140px;
+      }
+      
+      .back-btn, .control-btn {
+        width: 100px;
+        height: 100px;
+        font-size: 3rem;
+      }
+      
+      .channel-name {
+        font-size: 3rem;
+      }
+      
+      .video-js .vjs-control-bar {
+        height: 140px !important;
+      }
+      
+      .video-js .vjs-button {
+        width: 100px !important;
+        height: 100px !important;
+        font-size: 3rem !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-light"></div>
+  
+  <div class="bigscreen-mode-indicator">
+    <i class="fas fa-expand-arrows-alt"></i>
+    Big Screen Mode
+  </div>
+
+  <div class="top-bar" id="topBar">
+    <button class="back-btn" onclick="window.history.back()" aria-label="Go back">←</button>
+    <div class="channel-name" id="channelName">Loading…</div>
+    
+    <!-- Cast button (always visible) -->
+    <google-cast-launcher id="castButton" class="control-btn cast-btn"></google-cast-launcher>
+    
+    <!-- Audio toggle (always visible) -->
+    <button class="control-btn" id="audioToggle" aria-label="Switch to audio-only mode">
+      <i class="fas fa-headphones" id="audioIcon"></i>
+    </button>
+  </div>
+
+  <div class="video-container">
+    <div class="audio-only-label" id="audioLabel">Audio Only</div>
+    <video
+      id="tv-player"
+      class="video-js vjs-default-skin vjs-big-play-centered"
+      controls
+      playsinline
+      webkit-playsinline
+      preload="auto">
+    </video>
+    <div class="error-overlay" id="errorOverlay">
+      <div>Live stream unavailable.<br>Please try again.</div>
+      <button id="retryBtn">Retry</button>
+    </div>
+  </div>
+
+  <div class="cinema-overlay" id="cinemaOverlay">
+    <div class="cinema-controls">
+      <button class="cinema-btn" id="cinemaPlay" aria-label="Play/Pause">
+        <i class="fas fa-play"></i>
+      </button>
+      <button class="cinema-btn" id="cinemaMute" aria-label="Mute/Unmute">
+        <i class="fas fa-volume-up"></i>
+      </button>
+      <button class="cinema-btn" id="cinemaFullscreen" aria-label="Fullscreen">
+        <i class="fas fa-expand"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Video.js -->
+  <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+  <script>
+    const TV_JSON_URL = 'https://raw.githubusercontent.com/simsonpeter/Tctvs/refs/heads/main/tv.json';
+    let player = null;
+    let currentChannel = null;
+    let hideTimeout = null;
+
+    async function fetchChannels() {
+      const res = await fetch(TV_JSON_URL);
+      if (!res.ok) throw new Error('Failed to load channels');
+      return await res.json();
+    }
+
+    function showError() {
+      document.getElementById('errorOverlay').classList.add('show');
+    }
+
+    function hideError() {
+      document.getElementById('errorOverlay').classList.remove('show');
+    }
+
+    function setNowPlaying(channelId) {
+      localStorage.setItem('nowPlayingChannelId', String(channelId));
+    }
+
+    function toggleAudioOnly() {
+      const container = document.querySelector('.video-container');
+      const icon = document.getElementById('audioIcon');
+      const label = document.getElementById('audioLabel');
+      const btn = document.getElementById('audioToggle');
+      const isAudioOnly = container.classList.contains('audio-only');
+
+      if (isAudioOnly) {
+        container.classList.remove('audio-only');
+        icon.className = 'fas fa-headphones';
+        label.classList.remove('show');
+        btn.setAttribute('aria-label', 'Switch to audio-only mode');
+        btn.classList.remove('active');
+      } else {
+        container.classList.add('audio-only');
+        icon.className = 'fas fa-tv';
+        label.classList.add('show');
+        btn.setAttribute('aria-label', 'Switch back to video');
+        btn.classList.add('active');
+      }
+
+      if (player) {
+        player.play().catch(() => {});
+      }
+    }
+
+    // Cinema overlay controls
+    function setupCinemaControls() {
+      const overlay = document.getElementById('cinemaOverlay');
+      const topBar = document.getElementById('topBar');
+      const playBtn = document.getElementById('cinemaPlay');
+      const muteBtn = document.getElementById('cinemaMute');
+      const fullscreenBtn = document.getElementById('cinemaFullscreen');
+
+      // Show/hide overlay on mouse movement
+      let mouseTimeout;
+      document.addEventListener('mousemove', () => {
+        overlay.classList.add('show');
+        topBar.classList.remove('hidden');
+        
+        clearTimeout(mouseTimeout);
+        clearTimeout(hideTimeout);
+        
+        mouseTimeout = setTimeout(() => {
+          overlay.classList.remove('show');
+          hideTimeout = setTimeout(() => {
+            topBar.classList.add('hidden');
+          }, 1000);
+        }, 3000);
+      });
+
+      // Cinema control buttons
+      playBtn.addEventListener('click', () => {
+        if (player) {
+          if (player.paused()) {
+            player.play();
+            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+          } else {
+            player.pause();
+            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+          }
+        }
+      });
+
+      muteBtn.addEventListener('click', () => {
+        if (player) {
+          player.muted(!player.muted());
+          muteBtn.innerHTML = player.muted() ? 
+            '<i class="fas fa-volume-mute"></i>' : 
+            '<i class="fas fa-volume-up"></i>';
+        }
+      });
+
+      fullscreenBtn.addEventListener('click', () => {
+        if (player) {
+          if (player.isFullscreen()) {
+            player.exitFullscreen();
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+          } else {
+            player.requestFullscreen();
+            fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+          }
+        }
+      });
+    }
+
+    // Enhanced keyboard controls for big screen
+    function setupBigScreenControls() {
+      document.addEventListener('keydown', (e) => {
+        if (!player) return;
+
+        switch(e.code) {
+          case 'Space':
+            e.preventDefault();
+            if (player.paused()) {
+              player.play();
+              document.getElementById('cinemaPlay').innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+              player.pause();
+              document.getElementById('cinemaPlay').innerHTML = '<i class="fas fa-play"></i>';
+            }
+            break;
+          case 'ArrowLeft':
+            e.preventDefault();
+            player.currentTime(Math.max(0, player.currentTime() - 15));
+            break;
+          case 'ArrowRight':
+            e.preventDefault();
+            player.currentTime(Math.min(player.duration(), player.currentTime() + 15));
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            player.volume(Math.min(1, player.volume() + 0.1));
+            break;
+          case 'ArrowDown':
+            e.preventDefault();
+            player.volume(Math.max(0, player.volume() - 0.1));
+            break;
+          case 'KeyM':
+            e.preventDefault();
+            player.muted(!player.muted());
+            document.getElementById('cinemaMute').innerHTML = player.muted() ? 
+              '<i class="fas fa-volume-mute"></i>' : 
+              '<i class="fas fa-volume-up"></i>';
+            break;
+          case 'KeyF':
+            e.preventDefault();
+            if (player.isFullscreen()) {
+              player.exitFullscreen();
+              document.getElementById('cinemaFullscreen').innerHTML = '<i class="fas fa-expand"></i>';
+            } else {
+              player.requestFullscreen();
+              document.getElementById('cinemaFullscreen').innerHTML = '<i class="fas fa-compress"></i>';
+            }
+            break;
+        }
+      });
+    }
+
+    async function initPlayer() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const channelId = parseInt(urlParams.get('channel'));
+      if (!channelId) return showError();
+
+      try {
+        const channels = await fetchChannels();
+        const channel = channels.find(ch => ch.id === channelId);
+        if (!channel) return showError();
+
+        currentChannel = channel;
+        document.getElementById('channelName').textContent = channel.name;
+        setNowPlaying(channelId);
+
+        player = videojs('tv-player', {
+          controls: true,
+          autoplay: false,
+          preload: 'auto',
+          responsive: true,
+          inactivityTimeout: 8000, // Longer timeout for big screen
+          html5: {
+            hls: {
+              overrideNative: true
+            }
+          },
+          fluid: true,
+          aspectRatio: '16:9'
+        });
+
+        player.src({
+          src: channel.streamUrl,
+          type: 'application/x-mpegURL'
+        });
+
+        player.ready(() => {
+          hideError();
+          // ✅ Cast button is always visible, but hide it if Chrome Cast API is not available
+          if (typeof chrome === 'undefined' || !chrome.cast) {
+            document.getElementById('castButton').style.display = 'none';
+          }
+          
+          // Setup big screen controls
+          setupCinemaControls();
+          setupBigScreenControls();
+        });
+
+        player.on('error', () => {
+          console.error('Playback error');
+          showError();
+        });
+
+        player.on('play', () => {
+          document.getElementById('cinemaPlay').innerHTML = '<i class="fas fa-pause"></i>';
+        });
+
+        player.on('pause', () => {
+          document.getElementById('cinemaPlay').innerHTML = '<i class="fas fa-play"></i>';
+        });
+
+        player.on('volumechange', () => {
+          document.getElementById('cinemaMute').innerHTML = player.muted() ? 
+            '<i class="fas fa-volume-mute"></i>' : 
+            '<i class="fas fa-volume-up"></i>';
+        });
+
+        document.getElementById('audioToggle').addEventListener('click', toggleAudioOnly);
+        document.getElementById('retryBtn').addEventListener('click', () => {
+          hideError();
+          if (player && currentChannel) {
+            player.src({ src: currentChannel.streamUrl, type: 'application/x-mpegURL' });
+            player.play().catch(() => {});
+          }
+        });
+
+      } catch (err) {
+        console.error('Init error:', err);
+        showError();
+      }
+    }
+
+    // Optional: Show Cast button if framework loads (fallback)
+    window['__onGCastApiAvailable'] = function(loaded) {
+      if (loaded && typeof chrome !== 'undefined' && chrome.cast) {
+        document.getElementById('castButton').style.display = 'block';
+      }
+    };
+
+    initPlayer();
+  </script>
+</body>
+</html>
