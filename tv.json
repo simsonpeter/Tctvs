@@ -192,6 +192,12 @@
     "streamUrl": "https://ktismaservers.in:3587/multi_live/play_480.m3u8"
   },
   {
+    "id": 35,
+    "name": "Praise God TV",
+    "logo": "https://www.praisegodtv.net/early/assets/images/pgtv-logo-128x128.png",
+    "streamUrl": "https://ingest4-1163.boxcast.com/truculent-leg/tqj3qswc6rx56sxwqx7u/720p-byteranges-ext.m3u8?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9pbmdlc3Q0LTExNjMuYm94Y2FzdC5jb20vdHJ1Y3VsZW50LWxlZy90cWozcXN3YzZyeDU2c3h3cXg3dS83MjBwLWJ5dGVyYW5nZXMtZXh0Lm0zdTgiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3NjAxNTUzNjF9fX1dfQ__&Signature=KUsKWaRCdaMEGt9n0oaO-SC2JTiNldedzs6Ti6NHB9q92GWLoVEhCFZM50OQrPGQKVFlp2yHtuP2GnaA63SiVw7pbA5Tvow4KVZmKG7GpLKqbvVGm9J2SgA87aTYLWqICcjjL7TMSOp~sxibnPE97XbESykBA2OVs-0Q~AJphvViWyuj42qG8RX2dHjWkMGtAc79XzbGvMrOb-a58k1y5R55seJw4Y3PCA0ZkaQfEhTiFavz8csUpX8qsM7TFo7aAdoNtHQnB4hyuL1njc0xw7P9P7~JkHe4khMSBgiLEc-BYdHzDdG59kSwQ6GcGU1adgllwsdeNdQSUGRa5jGNEQ__&Key-Pair-Id=APKAJ7GUCBQUK6NTWZCA"
+  },
+  {
     "id": 32,
     "name": "Tamil Christian TV",
     "logo": "https://tamilchristiantv.org/wp-content/uploads/2019/02/Tamil-Christian-TV.png",
