@@ -178,6 +178,12 @@
     "name": "New Manna TV",
     "logo": "https://static.wixstatic.com/media/3d2e01_6bace0dd9dc942a69a8221647b184ce3~mv2.png/v1/fill/w_151,h_151,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/AngelTV.png",
     "streamUrl": "https://ktismaservers.in:3587/multi_live/play_480.m3u8"
+  },
+  {
+    "id": 31,
+    "name": "Uthamiyae TV",
+    "logo": "https://uthamiyae.tv/wp-content/uploads/2017/09/100x100-UTHAMIYAE-TV-copy.png",
+    "streamUrl": "https://kali.vdopanel.com:3169/stream/play.m3u8"
   }
   
 ]
