@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tctv-app-v5';
+const CACHE_NAME = 'tctv-app-v6';
 const STATIC_ASSETS = [
   './',
   'index.html',
@@ -7,7 +7,11 @@ const STATIC_ASSETS = [
   'manifest.webmanifest',
   'offline.html',
   'tv.json',
-  'assets/app-logo-v2.png'
+  'assets/app-logo-v2.png',
+  'assets/icon-192.png',
+  'assets/icon-512.png',
+  'assets/icon-maskable-192.png',
+  'assets/icon-maskable-512.png'
 ];
 
 self.addEventListener('install', (event) => {

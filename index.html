@@ -2,15 +2,15 @@
 <html lang="en" id="htmlRoot">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content" />
   <meta name="theme-color" id="themeColorMeta" content="#10131b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="TCTV" />
   <meta name="application-name" content="TCTV" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" type="image/png" href="assets/app-logo-v2.png" />
-  <link rel="apple-touch-icon" href="assets/app-logo-v2.png" />
+  <link rel="icon" type="image/png" href="assets/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="assets/icon-192.png" />
   <title>Tamil Christian TV</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -56,6 +56,8 @@
 
     html, body {
       height: 100%;
+      min-height: 100dvh;
+      overscroll-behavior: none;
     }
 
     body {
@@ -66,6 +68,9 @@
       align-items: stretch;
       overflow: hidden;
       padding: 0 10px;
+      min-height: 100dvh;
+      touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
     }
 
     [data-theme="light"] body {
@@ -82,7 +87,7 @@
       display: flex;
       flex-direction: column;
       flex: 1;
-      min-height: 100%;
+      min-height: 100dvh;
       background: var(--bg-secondary);
       border-left: 1px solid var(--border-soft);
       border-right: 1px solid var(--border-soft);
@@ -155,6 +160,12 @@
 
     .control-btn:active {
       transform: scale(0.96);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .search-wrap {
@@ -427,9 +438,14 @@
         <img src="assets/app-logo-v2.png" class="app-logo" alt="TCTV logo">
         <h1>Tamil Christian TV</h1>
       </div>
-      <button class="control-btn" id="themeToggle" aria-label="Toggle theme">
-        <i class="fas fa-moon"></i>
-      </button>
+      <div class="top-actions">
+        <button class="control-btn" id="installBtn" aria-label="Install app" title="Install app" style="display:none;">
+          <i class="fas fa-download"></i>
+        </button>
+        <button class="control-btn" id="themeToggle" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
     </div>
 
     <div class="search-wrap">
@@ -474,6 +490,51 @@
         });
       });
     }
+
+    let deferredInstallPrompt = null;
+    const installBtn = document.getElementById('installBtn');
+    const isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+
+    if (installBtn && isIOS && !isStandalone) {
+      installBtn.style.display = 'flex';
+      installBtn.innerHTML = '<i class="fas fa-share-from-square"></i>';
+      installBtn.title = 'Install app';
+    }
+
+    window.addEventListener('beforeinstallprompt', (event) => {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+      if (installBtn && !isStandalone) {
+        installBtn.style.display = 'flex';
+        installBtn.innerHTML = '<i class="fas fa-download"></i>';
+      }
+    });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (deferredInstallPrompt) {
+          deferredInstallPrompt.prompt();
+          const choice = await deferredInstallPrompt.userChoice;
+          if (choice.outcome === 'accepted') {
+            showToast('Installing app...');
+            installBtn.style.display = 'none';
+          }
+          deferredInstallPrompt = null;
+          return;
+        }
+
+        if (isIOS && !isStandalone) {
+          showToast('Use Share -> Add to Home Screen');
+        }
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      deferredInstallPrompt = null;
+      if (installBtn) installBtn.style.display = 'none';
+      showToast('App installed');
+    });
 
     const splashScreen = document.getElementById('splashScreen');
     setTimeout(() => {

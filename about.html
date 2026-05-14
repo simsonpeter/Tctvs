@@ -2,15 +2,15 @@
 <html lang="en" id="htmlRoot">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content" />
   <meta name="theme-color" id="themeColorMeta" content="#10131b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="TCTV" />
   <meta name="application-name" content="TCTV" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" type="image/png" href="assets/app-logo-v2.png" />
-  <link rel="apple-touch-icon" href="assets/app-logo-v2.png" />
+  <link rel="icon" type="image/png" href="assets/icon-192.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="assets/icon-192.png" />
   <title>About Us - TCTVS</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -58,6 +58,8 @@
 
     html, body {
       height: 100%;
+      min-height: 100dvh;
+      overscroll-behavior: none;
     }
 
     body {
@@ -68,6 +70,9 @@
       display: flex;
       overflow: hidden;
       padding: 0 10px;
+      min-height: 100dvh;
+      touch-action: manipulation;
+      -webkit-text-size-adjust: 100%;
     }
 
     [data-theme="light"] body {
@@ -84,7 +89,7 @@
       display: flex;
       flex-direction: column;
       flex: 1;
-      min-height: 100%;
+      min-height: 100dvh;
       background: var(--bg-secondary);
       border-left: 1px solid var(--border-soft);
       border-right: 1px solid var(--border-soft);
