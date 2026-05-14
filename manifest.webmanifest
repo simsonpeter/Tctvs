@@ -12,10 +12,10 @@
   "lang": "en",
   "icons": [
     {
-      "src": "assets/app-logo.svg",
-      "type": "image/svg+xml",
-      "sizes": "any",
-      "purpose": "any maskable"
+      "src": "assets/app-logo.png",
+      "type": "image/png",
+      "sizes": "1380x752",
+      "purpose": "any"
     }
   ]
 }
