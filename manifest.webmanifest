@@ -1,0 +1,21 @@
+{
+  "id": "/",
+  "name": "Tamil Christian TV",
+  "short_name": "TCTV",
+  "description": "Live Tamil Christian TV channels in an installable web app.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#10131b",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "assets/app-logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}

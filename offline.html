@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TCTV Offline</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: grid;
+      place-items: center;
+      background: #ffffff;
+      color: #10131b;
+      padding: 20px;
+    }
+
+    .card {
+      width: min(92vw, 420px);
+      text-align: center;
+      border: 1px solid rgba(16, 19, 27, 0.12);
+      border-radius: 18px;
+      padding: 24px 18px;
+      box-shadow: 0 10px 26px rgba(16, 19, 27, 0.12);
+      background: #fff;
+    }
+
+    img {
+      width: 96px;
+      border-radius: 20px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+    }
+
+    p {
+      margin: 0;
+      opacity: 0.85;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <img src="assets/app-logo.svg" alt="TCTV logo" />
+    <h1>You are offline</h1>
+    <p>TCTV will reconnect automatically when your internet is back.</p>
+  </main>
+</body>
+</html>
