@@ -3,32 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" id="themeColorMeta" content="#10131b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Tamil Christian TV</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     :root {
-      --bg-primary: #0f0f0f;
-      --bg-secondary: #1a1a1a;
+      --bg-primary: #10131b;
+      --bg-secondary: #171b27;
       --text-primary: #ffffff;
-      --card-bg: #222;
+      --text-muted: rgba(255, 255, 255, 0.72);
+      --card-bg: rgba(255, 255, 255, 0.06);
       --accent: #4a90e2;
-      --border-radius: 12px;
+      --border-radius: 16px;
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --top-bar-bg: rgba(16, 19, 27, 0.82);
     }
 
     [data-theme="light"] {
-      --bg-primary: #ffffff;
-      --bg-secondary: #f8f9fa;
-      --text-primary: #000000;
+      --bg-primary: #f2f4fb;
+      --bg-secondary: #ffffff;
+      --text-primary: #111827;
+      --text-muted: rgba(17, 24, 39, 0.72);
       --card-bg: #ffffff;
       --accent: #1a73e8;
+      --border-soft: rgba(17, 24, 39, 0.1);
+      --top-bar-bg: rgba(255, 255, 255, 0.88);
     }
 
     [data-theme="gold"] {
-      --bg-primary: #0a0a0a;
-      --bg-secondary: #141414;
+      --bg-primary: #0f0f10;
+      --bg-secondary: #1a1713;
       --text-primary: #ffffff;
-      --card-bg: #1e1e1e;
+      --text-muted: rgba(255, 255, 255, 0.76);
+      --card-bg: rgba(255, 215, 0, 0.08);
       --accent: #FFD700;
+      --border-soft: rgba(255, 215, 0, 0.22);
+      --top-bar-bg: rgba(15, 15, 16, 0.82);
     }
 
     * {
@@ -37,31 +49,59 @@
       padding: 0;
     }
 
+    html, body {
+      height: 100%;
+    }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: var(--bg-secondary);
+      background: radial-gradient(circle at top, #22293d 0%, var(--bg-primary) 45%);
       color: var(--text-primary);
       display: flex;
-      flex-direction: column;
-      height: 100vh;
+      align-items: stretch;
       overflow: hidden;
+      padding: 0 10px;
+    }
+
+    [data-theme="light"] body {
+      background: radial-gradient(circle at top, #dfe8ff 0%, var(--bg-primary) 52%);
+    }
+
+    [data-theme="gold"] body {
+      background: radial-gradient(circle at top, #30260f 0%, var(--bg-primary) 55%);
+    }
+
+    .app-shell {
+      width: min(100%, 940px);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 100%;
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border-soft);
+      border-right: 1px solid var(--border-soft);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.32);
     }
 
     .top-bar {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: var(--bg-primary);
-      padding: 12px 16px;
+      background: var(--top-bar-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid var(--border-soft);
     }
 
     .top-bar h1 {
       font-size: 1.2rem;
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 0.2px;
       flex: 1;
       text-align: center;
     }
@@ -70,78 +110,128 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.1);
-      border: none;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid var(--border-soft);
       color: var(--text-primary);
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       font-size: 1rem;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .control-btn:active {
+      transform: scale(0.96);
+    }
+
+    .search-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 12px 8px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .search-wrap i {
+      color: var(--text-muted);
+      font-size: 0.9rem;
     }
 
     .search-box {
       width: 100%;
-      padding: 10px;
-      margin: 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.2);
-      color: white;
+      padding: 12px 0;
+      border: none;
+      background: transparent;
+      color: var(--text-primary);
       font-size: 1rem;
+      outline: none;
     }
 
-    [data-theme="light"] .search-box {
-      background: #fff;
-      color: #000;
-      border-color: #ccc;
+    .search-box::placeholder {
+      color: var(--text-muted);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 8px 12px 10px;
+      padding: 0 4px;
+    }
+
+    .section-header h2 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .channel-count {
+      font-size: 0.78rem;
+      border-radius: 999px;
+      padding: 4px 10px;
+      border: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
     }
 
     .scrollable-content {
       flex: 1;
       overflow-y: auto;
-      padding-bottom: 70px;
+      padding-bottom: calc(84px + env(safe-area-inset-bottom));
+      scroll-behavior: smooth;
     }
 
     .channel-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(152px, 1fr));
+      gap: 12px;
       padding: 0 12px;
     }
 
     .channel-card {
       background: var(--card-bg);
       border-radius: var(--border-radius);
-      padding: 12px 8px;
+      padding: 14px 10px 12px;
       text-align: center;
       cursor: pointer;
-      min-height: 140px;
+      min-height: 150px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       position: relative;
-      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid var(--border-soft);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+    }
+
+    .channel-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(74, 144, 226, 0.18);
     }
 
     .channel-card:active {
       transform: scale(0.98);
-      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.24);
     }
 
     .channel-logo {
-      width: 70px;
-      height: 70px;
+      width: 72px;
+      height: 72px;
       object-fit: cover;
       border-radius: 50%;
       background: #444;
+      border: 2px solid rgba(255, 255, 255, 0.14);
     }
 
     .channel-name {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
-      margin-top: 6px;
+      margin-top: 8px;
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -172,15 +262,32 @@
       color: #FFD700;
     }
 
+    .now-playing-indicator {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(74, 144, 226, 0.22);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+      font-size: 0.62rem;
+      border: 1px solid rgba(74, 144, 226, 0.4);
+    }
+
     .bottom-tabs {
       position: sticky;
       bottom: 0;
       z-index: 100;
       display: flex;
       justify-content: space-around;
-      background: var(--bg-primary);
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 8px 0;
+      background: var(--top-bar-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border-soft);
+      padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
     }
 
     .tab {
@@ -190,15 +297,16 @@
       justify-content: center;
       color: var(--text-primary);
       text-decoration: none;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       padding: 6px 0;
       width: 33%;
-      opacity: 0.7;
+      opacity: 0.72;
+      transition: opacity 0.18s ease, color 0.18s ease;
     }
 
     .tab.active {
       opacity: 1;
-      font-weight: bold;
+      font-weight: 700;
       color: var(--accent);
     }
 
@@ -209,17 +317,20 @@
 
     .message {
       text-align: center;
-      padding: 20px;
-      color: var(--text-primary);
-      opacity: 0.7;
+      padding: 32px 20px;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
+      border-radius: 12px;
+      border: 1px dashed var(--border-soft);
+      background: rgba(255, 255, 255, 0.02);
     }
 
     #toast {
       position: fixed;
-      bottom: 80px;
+      bottom: calc(96px + env(safe-area-inset-bottom));
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.78);
       color: white;
       padding: 10px 20px;
       border-radius: 20px;
@@ -248,37 +359,47 @@
   </style>
 </head>
 <body>
-  <div class="top-bar">
-    <button class="control-btn" id="playLastBtn" title="Play last channel" style="display:none;">
-      <i class="fas fa-play"></i>
-    </button>
-    <h1>Tamil Christian TV</h1>
-    <button class="control-btn" id="themeToggle" aria-label="Toggle theme">
-      <i class="fas fa-moon"></i>
-    </button>
-  </div>
-
-  <input type="text" class="search-box" id="searchInput" placeholder="Search channels...">
-
-  <div class="scrollable-content">
-    <div class="channel-grid" id="channelGrid">
-      <div class="message">Loading channels…</div>
+  <div class="app-shell">
+    <div class="top-bar">
+      <button class="control-btn" id="playLastBtn" title="Play last channel" style="display:none;">
+        <i class="fas fa-play"></i>
+      </button>
+      <h1>Tamil Christian TV</h1>
+      <button class="control-btn" id="themeToggle" aria-label="Toggle theme">
+        <i class="fas fa-moon"></i>
+      </button>
     </div>
-  </div>
 
-  <div class="bottom-tabs">
-    <a href="index.html" class="tab active" id="tab-tv">
-      <i class="fas fa-tv"></i>
-      <span>TV</span>
-    </a>
-    <a href="#" class="tab" id="tab-fav">
-      <i class="fas fa-heart"></i>
-      <span>Favourites</span>
-    </a>
-    <a href="about.html" class="tab" id="tab-about">
-      <i class="fas fa-info-circle"></i>
-      <span>About Us</span>
-    </a>
+    <div class="search-wrap">
+      <i class="fas fa-magnifying-glass"></i>
+      <input type="text" class="search-box" id="searchInput" placeholder="Search channels...">
+    </div>
+
+    <div class="section-header">
+      <h2 id="channelSectionTitle">Live Channels</h2>
+      <span class="channel-count" id="channelCount">0 channels</span>
+    </div>
+
+    <div class="scrollable-content">
+      <div class="channel-grid" id="channelGrid">
+        <div class="message">Loading channels…</div>
+      </div>
+    </div>
+
+    <div class="bottom-tabs">
+      <a href="index.html" class="tab active" id="tab-tv">
+        <i class="fas fa-tv"></i>
+        <span>TV</span>
+      </a>
+      <a href="#" class="tab" id="tab-fav">
+        <i class="fas fa-heart"></i>
+        <span>Favourites</span>
+      </a>
+      <a href="about.html" class="tab" id="tab-about">
+        <i class="fas fa-info-circle"></i>
+        <span>About Us</span>
+      </a>
+    </div>
   </div>
 
   <div id="toast">Added to Favourites!</div>
@@ -287,14 +408,21 @@
     // =============== Theme ===============
     const htmlRoot = document.getElementById('htmlRoot');
     const themeToggleBtn = document.getElementById('themeToggle');
+    const themeColorMeta = document.getElementById('themeColorMeta');
     const savedTheme = localStorage.getItem('theme') || 'dark';
     htmlRoot.setAttribute('data-theme', savedTheme);
     updateThemeIcon(savedTheme);
+    updateThemeColor(savedTheme);
 
     function updateThemeIcon(theme) {
       if (theme === 'dark') themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
       else if (theme === 'light') themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
       else themeToggleBtn.innerHTML = '<i class="fas fa-gem"></i>';
+    }
+
+    function updateThemeColor(theme) {
+      const color = theme === 'light' ? '#f2f4fb' : theme === 'gold' ? '#0f0f10' : '#10131b';
+      themeColorMeta.setAttribute('content', color);
     }
 
     themeToggleBtn.addEventListener('click', () => {
@@ -305,6 +433,7 @@
       htmlRoot.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       updateThemeIcon(newTheme);
+      updateThemeColor(newTheme);
     });
 
     // =============== Toast ===============
@@ -336,6 +465,13 @@
     let favourites = JSON.parse(localStorage.getItem('favourites')) || [];
     let allChannels = [];
     let currentView = 'all';
+
+    function updateSectionMeta(label, count) {
+      const title = document.getElementById('channelSectionTitle');
+      const badge = document.getElementById('channelCount');
+      title.textContent = label;
+      badge.textContent = `${count} channel${count === 1 ? '' : 's'}`;
+    }
 
     function saveFavourites() {
       localStorage.setItem('favourites', JSON.stringify(favourites));
@@ -389,6 +525,7 @@
       e.preventDefault();
       currentView = 'all';
       updateTabActive('tv');
+      history.replaceState(null, '', window.location.pathname);
       renderChannels('all');
     });
 
@@ -396,6 +533,7 @@
       e.preventDefault();
       currentView = 'fav';
       updateTabActive('fav');
+      history.replaceState(null, '', `${window.location.pathname}#favourites`);
       renderChannels('fav');
     });
 
@@ -432,6 +570,7 @@
     function renderFiltered(channels) {
       const grid = document.getElementById('channelGrid');
       grid.innerHTML = '';
+      updateSectionMeta('Search Results', channels.length);
       if (channels.length === 0) {
         grid.innerHTML = '<div class="message">No matching channels</div>';
         return;
@@ -451,7 +590,7 @@
           ${badges}
         `;
         if (String(channel.id) === nowPlayingId) {
-          html += `<div style="position:absolute;top:6px;right:6px;color:#4a90e2;font-size:0.8rem;">▶️</div>`;
+          html += '<div class="now-playing-indicator"><i class="fas fa-play"></i></div>';
         }
         card.innerHTML = html;
         card.addEventListener('click', () => {
@@ -479,6 +618,7 @@
       let channelsToShow = view === 'fav'
         ? allChannels.filter(ch => isFavourite(ch.id))
         : allChannels;
+      updateSectionMeta(view === 'fav' ? 'Favourite Channels' : 'Live Channels', channelsToShow.length);
 
       if (channelsToShow.length === 0) {
         grid.innerHTML = `<div class="message">${
@@ -505,7 +645,7 @@
           ${badges}
         `;
         if (String(channel.id) === nowPlayingId) {
-          html += `<div style="position:absolute;top:6px;right:6px;color:#4a90e2;font-size:0.8rem;">▶️</div>`;
+          html += '<div class="now-playing-indicator"><i class="fas fa-play"></i></div>';
         }
         card.innerHTML = html;
         card.addEventListener('click', () => {
@@ -521,7 +661,10 @@
     // =============== Init ===============
     (async () => {
       allChannels = await fetchChannels();
-      renderChannels('all');
+      const openFavourites = window.location.hash.toLowerCase() === '#favourites';
+      currentView = openFavourites ? 'fav' : 'all';
+      updateTabActive(openFavourites ? 'fav' : 'tv');
+      renderChannels(currentView);
     })();
   </script>
 </body>
