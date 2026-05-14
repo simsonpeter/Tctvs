@@ -11,6 +11,22 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" type="image/png" href="assets/icon-192.png" />
   <link rel="apple-touch-icon" sizes="192x192" href="assets/icon-192.png" />
+  <script>
+    (() => {
+      try {
+        const splashKey = 'tctvSplashSeen';
+        const referrer = document.referrer;
+        const isSameOriginReferrer = referrer ? new URL(referrer).origin === window.location.origin : false;
+        const shouldShowSplash = !sessionStorage.getItem(splashKey) && !isSameOriginReferrer;
+        if (shouldShowSplash) {
+          document.documentElement.classList.add('show-splash');
+          sessionStorage.setItem(splashKey, '1');
+        }
+      } catch (error) {
+        // Fail safe: skip splash if session/referrer checks fail.
+      }
+    })();
+  </script>
   <title>Tamil Christian TV</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -92,12 +108,17 @@
       border-left: 1px solid var(--border-soft);
       border-right: 1px solid var(--border-soft);
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.32);
-      opacity: 0;
-      transform: translateY(10px);
+      opacity: 1;
+      transform: translateY(0);
       transition: opacity 0.35s ease, transform 0.35s ease;
     }
 
-    body.app-ready .app-shell {
+    html.show-splash .app-shell {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    html.show-splash body.app-ready .app-shell {
       opacity: 1;
       transform: translateY(0);
     }
@@ -404,11 +425,15 @@
       position: fixed;
       inset: 0;
       z-index: 3000;
-      display: grid;
+      display: none;
       place-items: center;
       background: #ffffff;
       opacity: 1;
       transition: opacity 0.45s ease;
+    }
+
+    html.show-splash .splash-screen {
+      display: grid;
     }
 
     .splash-screen.hide {
@@ -491,6 +516,21 @@
       });
     }
 
+    function preventUnwantedZoom() {
+      let lastTouchEnd = 0;
+      document.addEventListener('gesturestart', (event) => event.preventDefault());
+      document.addEventListener('gesturechange', (event) => event.preventDefault());
+      document.addEventListener('gestureend', (event) => event.preventDefault());
+      document.addEventListener('touchend', (event) => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+          event.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, { passive: false });
+    }
+    preventUnwantedZoom();
+
     let deferredInstallPrompt = null;
     const installBtn = document.getElementById('installBtn');
     const isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
@@ -537,11 +577,20 @@
     });
 
     const splashScreen = document.getElementById('splashScreen');
-    setTimeout(() => {
-      splashScreen.classList.add('hide');
+    const shouldShowSplash = document.documentElement.classList.contains('show-splash');
+    if (shouldShowSplash && splashScreen) {
+      setTimeout(() => {
+        splashScreen.classList.add('hide');
+        document.body.classList.add('app-ready');
+        setTimeout(() => {
+          splashScreen.remove();
+          document.documentElement.classList.remove('show-splash');
+        }, 500);
+      }, 5000);
+    } else {
       document.body.classList.add('app-ready');
-      setTimeout(() => splashScreen.remove(), 500);
-    }, 5000);
+      if (splashScreen) splashScreen.remove();
+    }
 
     // =============== Theme ===============
     const htmlRoot = document.getElementById('htmlRoot');
