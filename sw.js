@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tctv-app-v6';
+const CACHE_NAME = 'tctv-app-v7';
 const STATIC_ASSETS = [
   './',
   'index.html',
