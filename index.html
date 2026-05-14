@@ -9,8 +9,8 @@
   <meta name="apple-mobile-web-app-title" content="TCTV" />
   <meta name="application-name" content="TCTV" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" type="image/png" href="assets/app-logo.png" />
-  <link rel="apple-touch-icon" href="assets/app-logo.png" />
+  <link rel="icon" type="image/png" href="assets/app-logo-v2.png" />
+  <link rel="apple-touch-icon" href="assets/app-logo-v2.png" />
   <title>Tamil Christian TV</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -406,7 +406,7 @@
     }
 
     .splash-logo {
-      width: clamp(120px, 38vw, 190px);
+      width: min(56vw, 280px);
       height: auto;
       border-radius: 18%;
       box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
@@ -415,7 +415,7 @@
 </head>
 <body>
   <div class="splash-screen" id="splashScreen" aria-label="Splash screen">
-    <img src="assets/app-logo.png" class="splash-logo" alt="TCTV JayathaSoft logo">
+    <img src="assets/app-logo-v2.png" class="splash-logo" alt="TCTV JayathaSoft logo">
   </div>
 
   <div class="app-shell">
@@ -424,7 +424,7 @@
         <i class="fas fa-play"></i>
       </button>
       <div class="app-brand">
-        <img src="assets/app-logo.png" class="app-logo" alt="TCTV logo">
+        <img src="assets/app-logo-v2.png" class="app-logo" alt="TCTV logo">
         <h1>Tamil Christian TV</h1>
       </div>
       <button class="control-btn" id="themeToggle" aria-label="Toggle theme">
