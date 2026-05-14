@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" id="themeColorMeta" content="#10131b" />
+  <link rel="icon" type="image/svg+xml" href="assets/app-logo.svg" />
+  <link rel="apple-touch-icon" href="assets/app-logo.svg" />
   <title>About Us - TCTVS</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -151,6 +153,13 @@
       place-items: center;
     }
 
+    .app-main-logo {
+      width: min(56vw, 280px);
+      height: auto;
+      border-radius: 18%;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
+    }
+
     h1 {
       font-size: 1.45rem;
       margin-bottom: 16px;
@@ -235,7 +244,7 @@
     <div class="content">
       <div class="about-card">
         <div class="logo-placeholder">
-          <i class="fas fa-tv"></i>
+          <img src="assets/app-logo.svg" class="app-main-logo" alt="TCTV JayathaSoft app logo">
         </div>
 
         <h1>Tamil Christian TV Stations (TCTVS)</h1>

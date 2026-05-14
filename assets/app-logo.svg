@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="logoTitle logoDesc">
+  <title id="logoTitle">TCTV JayathaSoft Logo</title>
+  <desc id="logoDesc">Blue rounded app icon with cross, dove, bible and text TCTV JAYATHASOFT</desc>
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#03204f"/>
+      <stop offset="100%" stop-color="#01163b"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff0ae"/>
+      <stop offset="45%" stop-color="#e4c36a"/>
+      <stop offset="100%" stop-color="#b4852f"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#53d6ff"/>
+      <stop offset="100%" stop-color="#1268d9"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="1024" rx="210" fill="url(#bgGradient)"/>
+  <circle cx="520" cy="305" r="180" fill="rgba(65,160,255,0.16)" filter="url(#softGlow)"/>
+
+  <g transform="translate(310 170)">
+    <path d="M198 26v124h-66v44h66v85h52v-85h67v-44h-67V26z" fill="url(#gold)" filter="url(#softGlow)"/>
+  </g>
+
+  <g transform="translate(250 310)">
+    <path d="M64 184c87-52 173-52 260 0l18-64c-97-57-194-57-291 0z" fill="#1e5ac7"/>
+    <path d="M83 168c74-44 148-44 222 0l15-52c-83-47-167-47-250 0z" fill="#46b6ff"/>
+    <path d="M46 78c96 0 162 20 222 53v144c-57-33-124-50-222-50z" fill="none" stroke="url(#gold)" stroke-width="14" stroke-linejoin="round"/>
+    <path d="M491 78c-96 0-162 20-222 53v144c57-33 124-50 222-50z" fill="none" stroke="url(#gold)" stroke-width="14" stroke-linejoin="round"/>
+    <path d="M268 128v168" stroke="url(#cyan)" stroke-width="12" stroke-linecap="round"/>
+    <path d="M214 140l45-8" stroke="#0c2e74" stroke-width="10" stroke-linecap="round"/>
+    <path d="M243 118l10 52" stroke="#0c2e74" stroke-width="10" stroke-linecap="round"/>
+  </g>
+
+  <g transform="translate(588 160)" fill="url(#gold)" filter="url(#softGlow)">
+    <path d="M165 90c-48 0-100 18-122 58-17-30-5-73 24-95 17 24 56 34 98 37z"/>
+    <path d="M62 170c38-22 84-28 130-28-14 40-60 77-107 77-17 0-33-7-45-18 6-12 13-23 22-31z"/>
+    <path d="M3 183c78 0 149 47 188 120-73-10-146-61-188-120z" fill="url(#cyan)"/>
+  </g>
+
+  <g fill="url(#gold)" font-family="Segoe UI, Arial, sans-serif" font-weight="800" text-anchor="middle">
+    <text x="512" y="725" font-size="150" letter-spacing="6">TCTV</text>
+    <text x="512" y="855" font-size="78" letter-spacing="3">JAYATHASOFT</text>
+  </g>
+</svg>

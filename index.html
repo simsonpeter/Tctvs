@@ -6,6 +6,8 @@
   <meta name="theme-color" id="themeColorMeta" content="#10131b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="icon" type="image/svg+xml" href="assets/app-logo.svg" />
+  <link rel="apple-touch-icon" href="assets/app-logo.svg" />
   <title>Tamil Christian TV</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
@@ -82,6 +84,14 @@
       border-left: 1px solid var(--border-soft);
       border-right: 1px solid var(--border-soft);
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.32);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    body.app-ready .app-shell {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .top-bar {
@@ -98,12 +108,31 @@
       border-bottom: 1px solid var(--border-soft);
     }
 
-    .top-bar h1 {
-      font-size: 1.2rem;
+    .app-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .app-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
+    }
+
+    .app-brand h1 {
+      font-size: 1.12rem;
       font-weight: 700;
       letter-spacing: 0.2px;
-      flex: 1;
       text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .control-btn {
@@ -356,15 +385,45 @@
         opacity: 0;
       }
     }
+
+    .splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      display: grid;
+      place-items: center;
+      background: #ffffff;
+      opacity: 1;
+      transition: opacity 0.45s ease;
+    }
+
+    .splash-screen.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .splash-logo {
+      width: min(64vw, 280px);
+      height: auto;
+      border-radius: 18%;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+    }
   </style>
 </head>
 <body>
+  <div class="splash-screen" id="splashScreen" aria-label="Splash screen">
+    <img src="assets/app-logo.svg" class="splash-logo" alt="TCTV JayathaSoft logo">
+  </div>
+
   <div class="app-shell">
     <div class="top-bar">
       <button class="control-btn" id="playLastBtn" title="Play last channel" style="display:none;">
         <i class="fas fa-play"></i>
       </button>
-      <h1>Tamil Christian TV</h1>
+      <div class="app-brand">
+        <img src="assets/app-logo.svg" class="app-logo" alt="TCTV logo">
+        <h1>Tamil Christian TV</h1>
+      </div>
       <button class="control-btn" id="themeToggle" aria-label="Toggle theme">
         <i class="fas fa-moon"></i>
       </button>
@@ -405,6 +464,13 @@
   <div id="toast">Added to Favourites!</div>
 
   <script>
+    const splashScreen = document.getElementById('splashScreen');
+    setTimeout(() => {
+      splashScreen.classList.add('hide');
+      document.body.classList.add('app-ready');
+      setTimeout(() => splashScreen.remove(), 500);
+    }, 5000);
+
     // =============== Theme ===============
     const htmlRoot = document.getElementById('htmlRoot');
     const themeToggleBtn = document.getElementById('themeToggle');
