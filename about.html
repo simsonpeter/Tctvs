@@ -189,6 +189,162 @@
       font-weight: 600;
     }
 
+    .plan-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .plan-section h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+
+    .plan-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .plan-form-grid {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .plan-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .plan-field label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .plan-input,
+    .plan-textarea {
+      width: 100%;
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-primary);
+      padding: 10px 12px;
+      font: inherit;
+      outline: none;
+    }
+
+    .plan-textarea {
+      min-height: 76px;
+      resize: vertical;
+    }
+
+    .plan-input:focus,
+    .plan-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.16);
+    }
+
+    .plan-card-preview {
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid var(--border-soft);
+      background: linear-gradient(160deg, #101f45 0%, #15346c 45%, #0b1a3d 100%);
+      box-shadow: 0 14px 26px rgba(0, 0, 0, 0.24);
+      color: #f8fbff;
+      margin-bottom: 12px;
+    }
+
+    .plan-card-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .plan-card-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
+      flex-shrink: 0;
+    }
+
+    .plan-card-brand {
+      line-height: 1.25;
+    }
+
+    .plan-card-brand strong {
+      display: block;
+      font-size: 0.9rem;
+      letter-spacing: 0.4px;
+    }
+
+    .plan-card-brand span {
+      font-size: 0.74rem;
+      opacity: 0.9;
+    }
+
+    .plan-card-date {
+      font-size: 0.76rem;
+      opacity: 0.92;
+      margin-bottom: 8px;
+    }
+
+    .plan-card-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 10px;
+      color: #ffe391;
+    }
+
+    .plan-card-line {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      margin-bottom: 6px;
+    }
+
+    .plan-card-line strong {
+      color: #9ed5ff;
+    }
+
+    .plan-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .plan-btn {
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: rgba(74, 144, 226, 0.16);
+      color: var(--text-primary);
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .plan-btn.secondary {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .plan-status {
+      min-height: 18px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
     .footer {
       margin-top: 30px;
       padding-top: 20px;
@@ -271,6 +427,61 @@
           Whether you're at home, traveling, or in a region with limited Christian media, TCTVS helps you stay connected to the Body of Christ through the power of digital broadcasting.
         </p>
 
+        <div class="plan-section">
+          <h2>Share Bible Reading Plan as Card</h2>
+          <div class="plan-subtitle">Create a beautiful card and share it as an image.</div>
+
+          <div class="plan-form-grid">
+            <div class="plan-field">
+              <label for="planDate">Date</label>
+              <input class="plan-input" id="planDate" type="text" placeholder="May 15, 2026" />
+            </div>
+            <div class="plan-field">
+              <label for="planTitle">Day / Theme</label>
+              <input class="plan-input" id="planTitle" type="text" placeholder="Day 01: Walk by Faith" />
+            </div>
+            <div class="plan-field">
+              <label for="planReading">Reading</label>
+              <input class="plan-input" id="planReading" type="text" placeholder="John 15:1-11" />
+            </div>
+            <div class="plan-field">
+              <label for="planVerse">Key Verse</label>
+              <textarea class="plan-textarea" id="planVerse" placeholder="Remain in me, as I also remain in you. - John 15:4"></textarea>
+            </div>
+            <div class="plan-field">
+              <label for="planPrayer">Prayer Focus</label>
+              <input class="plan-input" id="planPrayer" type="text" placeholder="Abide in Christ daily and bear fruit." />
+            </div>
+          </div>
+
+          <div class="plan-card-preview" id="planCardPreview">
+            <div class="plan-card-top">
+              <img src="assets/app-logo-v2.png" class="plan-card-logo" alt="TCTV logo">
+              <div class="plan-card-brand">
+                <strong>TCTV Bible Reading Plan</strong>
+                <span id="previewPlanDate">May 15, 2026</span>
+              </div>
+            </div>
+            <div class="plan-card-title" id="previewPlanTitle">Day 01: Walk by Faith</div>
+            <div class="plan-card-line"><strong>Reading:</strong> <span id="previewPlanReading">John 15:1-11</span></div>
+            <div class="plan-card-line"><strong>Key Verse:</strong> <span id="previewPlanVerse">Remain in me, as I also remain in you. - John 15:4</span></div>
+            <div class="plan-card-line"><strong>Prayer:</strong> <span id="previewPlanPrayer">Abide in Christ daily and bear fruit.</span></div>
+          </div>
+
+          <div class="plan-actions">
+            <button class="plan-btn" id="sharePlanBtn" type="button">
+              <i class="fas fa-share-nodes"></i>
+              Share Card
+            </button>
+            <button class="plan-btn secondary" id="downloadPlanBtn" type="button">
+              <i class="fas fa-download"></i>
+              Download Card
+            </button>
+          </div>
+          <div class="plan-status" id="planStatus" role="status" aria-live="polite"></div>
+          <canvas id="planCardCanvas" width="1080" height="1350" style="display:none;"></canvas>
+        </div>
+
         <div class="footer">
           <div>© 2025 Tamil Christian TV Stations</div>
           <div class="developer">Developed by JayathaSoft</div>
@@ -323,6 +534,260 @@
     const savedTheme = localStorage.getItem('theme') || 'dark';
     htmlRoot.setAttribute('data-theme', savedTheme);
     themeColorMeta.setAttribute('content', savedTheme === 'light' ? '#f2f4fb' : savedTheme === 'gold' ? '#0f0f10' : '#10131b');
+
+    const planDateInput = document.getElementById('planDate');
+    const planTitleInput = document.getElementById('planTitle');
+    const planReadingInput = document.getElementById('planReading');
+    const planVerseInput = document.getElementById('planVerse');
+    const planPrayerInput = document.getElementById('planPrayer');
+    const sharePlanBtn = document.getElementById('sharePlanBtn');
+    const downloadPlanBtn = document.getElementById('downloadPlanBtn');
+    const planStatus = document.getElementById('planStatus');
+    const planCardCanvas = document.getElementById('planCardCanvas');
+
+    const previewPlanDate = document.getElementById('previewPlanDate');
+    const previewPlanTitle = document.getElementById('previewPlanTitle');
+    const previewPlanReading = document.getElementById('previewPlanReading');
+    const previewPlanVerse = document.getElementById('previewPlanVerse');
+    const previewPlanPrayer = document.getElementById('previewPlanPrayer');
+
+    const today = new Date();
+    const defaultDate = today.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    planDateInput.value = defaultDate;
+    planTitleInput.value = 'Day 01: Walk by Faith';
+    planReadingInput.value = 'John 15:1-11';
+    planVerseInput.value = 'Remain in me, as I also remain in you. - John 15:4';
+    planPrayerInput.value = 'Abide in Christ daily and bear fruit.';
+
+    function getPlanData() {
+      return {
+        date: planDateInput.value.trim() || defaultDate,
+        title: planTitleInput.value.trim() || 'Day 01: Walk by Faith',
+        reading: planReadingInput.value.trim() || 'John 15:1-11',
+        verse: planVerseInput.value.trim() || 'Remain in me, as I also remain in you. - John 15:4',
+        prayer: planPrayerInput.value.trim() || 'Abide in Christ daily and bear fruit.'
+      };
+    }
+
+    function updatePlanPreview() {
+      const data = getPlanData();
+      previewPlanDate.textContent = data.date;
+      previewPlanTitle.textContent = data.title;
+      previewPlanReading.textContent = data.reading;
+      previewPlanVerse.textContent = data.verse;
+      previewPlanPrayer.textContent = data.prayer;
+    }
+
+    function setPlanStatus(message) {
+      planStatus.textContent = message;
+      if (!message) return;
+      setTimeout(() => {
+        if (planStatus.textContent === message) planStatus.textContent = '';
+      }, 2500);
+    }
+
+    function drawRoundedRect(ctx, x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    function wrapText(ctx, text, maxWidth) {
+      const words = text.split(/\s+/).filter(Boolean);
+      const lines = [];
+      let line = '';
+      words.forEach((word) => {
+        const testLine = line ? `${line} ${word}` : word;
+        if (ctx.measureText(testLine).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = testLine;
+        }
+      });
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    let planLogoImagePromise;
+    function getPlanLogoImage() {
+      if (!planLogoImagePromise) {
+        planLogoImagePromise = new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = 'assets/app-logo-v2.png';
+        });
+      }
+      return planLogoImagePromise;
+    }
+
+    async function renderPlanCardBlob() {
+      const data = getPlanData();
+      const canvas = planCardCanvas;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      const bg = ctx.createLinearGradient(0, 0, w, h);
+      bg.addColorStop(0, '#0f1c42');
+      bg.addColorStop(0.55, '#19498f');
+      bg.addColorStop(1, '#0b1738');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.globalAlpha = 0.08;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(910, 200, 190, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(160, 1160, 230, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      const cardX = 72;
+      const cardY = 72;
+      const cardW = w - 144;
+      const cardH = h - 144;
+      drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 50);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.97)';
+      ctx.fill();
+
+      const logo = await getPlanLogoImage();
+      const logoSize = 170;
+      ctx.drawImage(logo, cardX + 54, cardY + 54, logoSize, logoSize);
+
+      ctx.fillStyle = '#102b5b';
+      ctx.font = '700 48px "Segoe UI", Arial, sans-serif';
+      ctx.fillText('TCTV Bible Reading Plan', cardX + 252, cardY + 118);
+      ctx.font = '500 30px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#3f5f95';
+      ctx.fillText(data.date, cardX + 252, cardY + 166);
+
+      let y = cardY + 280;
+      ctx.font = '700 64px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#0f2f67';
+      wrapText(ctx, data.title, cardW - 108).slice(0, 2).forEach((line) => {
+        ctx.fillText(line, cardX + 54, y);
+        y += 74;
+      });
+
+      y += 12;
+      ctx.font = '700 38px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#1a3b77';
+      ctx.fillText('Reading', cardX + 54, y);
+      y += 48;
+      ctx.font = '500 34px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#253756';
+      wrapText(ctx, data.reading, cardW - 108).slice(0, 3).forEach((line) => {
+        ctx.fillText(line, cardX + 54, y);
+        y += 46;
+      });
+
+      y += 26;
+      ctx.font = '700 38px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#1a3b77';
+      ctx.fillText('Key Verse', cardX + 54, y);
+      y += 48;
+      ctx.font = '500 32px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#2b3f61';
+      wrapText(ctx, data.verse, cardW - 108).slice(0, 6).forEach((line) => {
+        ctx.fillText(line, cardX + 54, y);
+        y += 44;
+      });
+
+      y += 20;
+      ctx.font = '700 38px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#1a3b77';
+      ctx.fillText('Prayer Focus', cardX + 54, y);
+      y += 48;
+      ctx.font = '500 32px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#2b3f61';
+      wrapText(ctx, data.prayer, cardW - 108).slice(0, 4).forEach((line) => {
+        ctx.fillText(line, cardX + 54, y);
+        y += 44;
+      });
+
+      ctx.strokeStyle = 'rgba(26, 59, 119, 0.25)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(cardX + 54, cardY + cardH - 130);
+      ctx.lineTo(cardX + cardW - 54, cardY + cardH - 130);
+      ctx.stroke();
+
+      ctx.font = '600 30px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#294879';
+      ctx.fillText('Shared from TCTV App', cardX + 54, cardY + cardH - 78);
+
+      return new Promise((resolve, reject) => {
+        canvas.toBlob((blob) => {
+          if (blob) resolve(blob);
+          else reject(new Error('Unable to generate card image'));
+        }, 'image/png', 1);
+      });
+    }
+
+    function downloadBlob(blob, fileName) {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    [planDateInput, planTitleInput, planReadingInput, planVerseInput, planPrayerInput].forEach((input) => {
+      input.addEventListener('input', updatePlanPreview);
+    });
+    updatePlanPreview();
+
+    sharePlanBtn.addEventListener('click', async () => {
+      try {
+        setPlanStatus('Preparing card...');
+        const blob = await renderPlanCardBlob();
+        const fileName = `bible-reading-plan-${Date.now()}.png`;
+        const file = new File([blob], fileName, { type: 'image/png' });
+        const shareText = `${getPlanData().title} | ${getPlanData().reading}`;
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: 'My Bible Reading Plan',
+            text: shareText,
+            files: [file]
+          });
+          setPlanStatus('Card shared successfully.');
+          return;
+        }
+
+        downloadBlob(blob, fileName);
+        setPlanStatus('Share not supported here. Card downloaded.');
+      } catch (error) {
+        console.error(error);
+        setPlanStatus('Could not share card right now.');
+      }
+    });
+
+    downloadPlanBtn.addEventListener('click', async () => {
+      try {
+        const blob = await renderPlanCardBlob();
+        downloadBlob(blob, `bible-reading-plan-${Date.now()}.png`);
+        setPlanStatus('Card downloaded.');
+      } catch (error) {
+        console.error(error);
+        setPlanStatus('Could not download card right now.');
+      }
+    });
   </script>
 </body>
 </html>
